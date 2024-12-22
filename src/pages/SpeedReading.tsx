@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
+import ActivityCard from "@/components/ActivityCard";
 
 const exercises = [
   {
@@ -21,10 +22,51 @@ const exercises = [
     description: "Learn to recognize common words instantly",
     level: 2,
   },
+  {
+    id: 4,
+    title: "Sentence Flashing",
+    description: "Read and comprehend rapidly displayed sentences",
+    level: 2,
+  },
+  {
+    id: 5,
+    title: "Memory Match Game",
+    description: "Match previously shown words from memory",
+    level: 3,
+  },
+  {
+    id: 6,
+    title: "Speed Reading Challenges",
+    description: "Practice with increasing word display speeds",
+    level: 3,
+  },
+  {
+    id: 7,
+    title: "Phonics and Pronunciation",
+    description: "Learn word sounds and pronunciation",
+    level: 4,
+  },
+  {
+    id: 8,
+    title: "Word Meaning and Context",
+    description: "Build vocabulary through context",
+    level: 4,
+  },
+  {
+    id: 9,
+    title: "Visual Puzzles",
+    description: "Complete words with missing letters",
+    level: 5,
+  },
 ];
 
 const SpeedReading = () => {
   const [selectedLevel, setSelectedLevel] = useState(1);
+
+  const handleExerciseClick = (id: number) => {
+    console.log(`Selected exercise: ${id}`);
+    // Exercise selection logic will be implemented later
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -37,16 +79,15 @@ const SpeedReading = () => {
           <p className="text-gray-600">Select an exercise to begin</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {exercises.map((exercise) => (
-            <Card
+            <ActivityCard
               key={exercise.id}
-              className="p-6 cursor-pointer hover:shadow-lg transition-all duration-300"
-            >
-              <h3 className="text-lg font-semibold mb-2">{exercise.title}</h3>
-              <p className="text-sm text-gray-600 mb-4">{exercise.description}</p>
-              <span className="text-xs text-primary">Level {exercise.level}</span>
-            </Card>
+              title={exercise.title}
+              description={exercise.description}
+              onClick={() => handleExerciseClick(exercise.id)}
+              className="bg-white hover:bg-gray-50"
+            />
           ))}
         </div>
       </main>
