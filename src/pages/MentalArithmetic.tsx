@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import ActivityCard from "@/components/ActivityCard";
+import ExerciseLevels from "@/components/ExerciseLevels";
 
 const exercises = [
   {
@@ -90,12 +91,28 @@ const exercises = [
 ];
 
 const MentalArithmetic = () => {
-  const [selectedLevel, setSelectedLevel] = useState(1);
+  const [selectedExercise, setSelectedExercise] = useState<number | null>(null);
 
   const handleExerciseClick = (id: number) => {
-    console.log(`Selected exercise: ${id}`);
-    // Exercise selection logic will be implemented later
+    setSelectedExercise(id);
   };
+
+  if (selectedExercise) {
+    const exercise = exercises.find((ex) => ex.id === selectedExercise);
+    if (!exercise) return null;
+
+    return (
+      <div>
+        <Navbar />
+        <ExerciseLevels
+          title={exercise.title}
+          description={exercise.description}
+          levels={8}
+          currentLevel={1}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
