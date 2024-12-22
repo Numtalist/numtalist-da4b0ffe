@@ -11,7 +11,7 @@ const Index = () => {
       <main className="pt-20 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Welcome to BrainBoost
+            Welcome to Numtalist
           </h1>
           <p className="text-lg text-gray-600">
             Enhance your reading speed and mental math skills through fun exercises
