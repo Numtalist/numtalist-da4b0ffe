@@ -3,6 +3,7 @@ import ActivityCard from "@/components/ActivityCard";
 import Navbar from "@/components/Navbar";
 
 const Index = () => {
+  console.log("Index page loaded - Latest version");
   const navigate = useNavigate();
 
   return (
