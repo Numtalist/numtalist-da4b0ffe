@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check, ThinkingEmoji } from "lucide-react";
+import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface NumberRecognitionProps {
@@ -15,6 +15,7 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
   const [choices, setChoices] = useState<number[]>([]);
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [showAnswer, setShowAnswer] = useState(false);
   const { toast } = useToast();
 
   // Calculate difficulty parameters based on level
@@ -44,6 +45,7 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
     setShowNumber(true);
     setSelectedNumber(null);
     setIsCorrect(null);
+    setShowAnswer(false);
 
     // Hide number after display time
     setTimeout(() => {
@@ -63,17 +65,21 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
     if (correct) {
       toast({
         title: "Correct! 🎉",
-        description: "Well done! Moving to the next number.",
+        description: "Well done! Click 'Next Level' to continue.",
       });
-      setTimeout(() => {
-        startNewRound();
-      }, 1500);
+      setShowAnswer(true);
     } else {
       toast({
         title: "Think again! 🤔",
-        description: "That's not the number we showed.",
-        variant: "destructive",
+        description: "That's not the number we showed. Here it is again:",
       });
+      setShowNumber(true); // Show the number again after wrong answer
+    }
+  };
+
+  const handleNextLevel = () => {
+    if (isCorrect) {
+      onComplete();
     }
   };
 
@@ -85,14 +91,14 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
       </div>
 
       <Card className="w-48 h-48 flex items-center justify-center bg-gray-100">
-        {showNumber ? (
+        {(showNumber || showAnswer) ? (
           <span className="text-6xl font-bold">{number}</span>
         ) : (
           <div className="w-32 h-32 bg-yellow-300" />
         )}
       </Card>
 
-      {!showNumber && (
+      {!showNumber && !showAnswer && (
         <div className="grid grid-cols-3 gap-4 mt-8">
           {choices.map((choice, index) => (
             <Button
@@ -117,9 +123,17 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
       )}
 
       {isCorrect && (
-        <div className="flex items-center gap-2">
-          <Check className="text-green-500" />
-          <span>Correct!</span>
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Check className="text-green-500" />
+            <span>Correct!</span>
+          </div>
+          <Button 
+            onClick={handleNextLevel}
+            className="mt-4"
+          >
+            Next Level
+          </Button>
         </div>
       )}
     </div>
