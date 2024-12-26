@@ -11,11 +11,12 @@ interface NumberRecognitionProps {
 
 const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
   const [number, setNumber] = useState<number>(0);
-  const [showNumber, setShowNumber] = useState(true);
+  const [showNumber, setShowNumber] = useState(false);
   const [choices, setChoices] = useState<number[]>([]);
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   const { toast } = useToast();
 
   // Calculate difficulty parameters based on level
@@ -53,8 +54,19 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
     }, displayTime);
   };
 
-  useEffect(() => {
+  const startGame = () => {
+    setGameStarted(true);
     startNewRound();
+  };
+
+  const handleTryAgain = () => {
+    startNewRound();
+  };
+
+  useEffect(() => {
+    if (gameStarted) {
+      startNewRound();
+    }
   }, [level]);
 
   const handleNumberSelect = (choice: number) => {
@@ -71,7 +83,7 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
     } else {
       toast({
         title: "Think again! 🤔",
-        description: "That's not the number we showed. Here it is again:",
+        description: "That's not the number we showed. Try again!",
       });
       setShowNumber(true); // Show the number again after wrong answer
     }
@@ -82,6 +94,23 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
       onComplete();
     }
   };
+
+  if (!gameStarted) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
+        <div className="text-center mb-4">
+          <h2 className="text-2xl font-bold mb-2">Number Recognition</h2>
+          <p className="text-gray-600">Level {level}</p>
+          <p className="text-gray-600 mt-4">
+            Remember the number shown and select it from the choices below.
+          </p>
+        </div>
+        <Button onClick={startGame} size="lg">
+          Start Game
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
@@ -120,6 +149,16 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
             </Button>
           ))}
         </div>
+      )}
+
+      {isCorrect === false && (
+        <Button 
+          onClick={handleTryAgain}
+          variant="secondary"
+          className="mt-4"
+        >
+          Try Again
+        </Button>
       )}
 
       {isCorrect && (
