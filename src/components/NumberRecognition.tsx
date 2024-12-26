@@ -24,15 +24,31 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
   const numChoices = Math.min(3 + Math.floor(level / 2), 8); // Increases from 3 to 8 choices
 
   const generateNumber = () => {
-    const max = Math.pow(10, Math.min(level, 4)); // Increases digit count with level
-    return Math.floor(Math.random() * max);
+    // Increases digit count with level
+    const digitCount = Math.min(1 + Math.floor((level - 1) / 2), 4);
+    const max = Math.pow(10, digitCount);
+    const min = Math.pow(10, digitCount - 1);
+    return Math.floor(Math.random() * (max - min) + min);
   };
 
   const generateChoices = (correctNumber: number) => {
     const choices = [correctNumber];
+    const digitCount = correctNumber.toString().length;
+    
+    // Generate similar numbers for harder levels
     while (choices.length < numChoices) {
-      const choice = generateNumber();
-      if (!choices.includes(choice)) {
+      let choice;
+      if (level > 4) {
+        // For higher levels, generate more similar numbers
+        const variation = Math.floor(Math.random() * 5) - 2; // -2 to +2
+        const position = Math.pow(10, Math.floor(Math.random() * digitCount));
+        choice = correctNumber + (variation * position);
+      } else {
+        // For lower levels, generate more distinct numbers
+        choice = generateNumber();
+      }
+      
+      if (!choices.includes(choice) && choice > 0) {
         choices.push(choice);
       }
     }
