@@ -135,7 +135,10 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
         <p className="text-gray-600">Level {level}</p>
       </div>
 
-      <Card className="w-48 h-48 flex items-center justify-center bg-gray-100">
+      <Card className="w-48 h-48 flex flex-col items-center justify-center bg-gray-100 relative">
+        <div className="absolute top-2 left-2 bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center font-bold">
+          {level}
+        </div>
         {(showNumber || showAnswer) ? (
           <span className="text-6xl font-bold">{number}</span>
         ) : (
