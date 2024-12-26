@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Lock } from "lucide-react";
+import NumberRecognition from "./NumberRecognition";
 
 interface ExerciseLevelsProps {
   title: string;
@@ -9,7 +11,28 @@ interface ExerciseLevelsProps {
   currentLevel?: number;
 }
 
-const ExerciseLevels = ({ title, description, levels = 8, currentLevel = 1 }: ExerciseLevelsProps) => {
+const ExerciseLevels = ({ 
+  title, 
+  description, 
+  levels = 8, 
+  currentLevel = 1 
+}: ExerciseLevelsProps) => {
+  const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
+
+  const handleLevelComplete = () => {
+    // Here you would typically update the progress and unlock the next level
+    console.log("Level completed!");
+  };
+
+  if (selectedLevel) {
+    return (
+      <NumberRecognition 
+        level={selectedLevel} 
+        onComplete={handleLevelComplete}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <main className="pt-20 px-4 max-w-7xl mx-auto">
@@ -29,7 +52,7 @@ const ExerciseLevels = ({ title, description, levels = 8, currentLevel = 1 }: Ex
                 className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg ${
                   i + 1 <= currentLevel ? "bg-primary/10" : "bg-gray-100"
                 }`}
-                onClick={() => console.log(`Selected level ${i + 1}`)}
+                onClick={() => i + 1 <= currentLevel && setSelectedLevel(i + 1)}
               >
                 <div className="text-2xl font-bold mb-2">
                   {i + 1 <= currentLevel ? (
