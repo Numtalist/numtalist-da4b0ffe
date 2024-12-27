@@ -11,12 +11,12 @@ interface NumberCardProps {
 
 const NumberCard = ({ level, number, showNumber, showAnswer }: NumberCardProps) => {
   return (
-    <Card className="w-48 h-48 flex flex-col items-center justify-center bg-gray-100 relative">
+    <Card className="w-48 h-48 flex flex-col items-center justify-center bg-white p-4 relative">
       <LevelDisplay level={level} />
       {(showNumber || showAnswer) ? (
         <span className="text-6xl font-bold">{number}</span>
       ) : (
-        <div className="w-32 h-32 bg-yellow-300" />
+        <div className="w-32 h-32 bg-[#FEF7CD] rounded-2xl border-4 border-white shadow-lg" />
       )}
     </Card>
   );
