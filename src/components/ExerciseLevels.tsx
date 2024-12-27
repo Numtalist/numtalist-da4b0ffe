@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Lock } from "lucide-react";
+import { Lock, CheckCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import NumberRecognition from "./NumberRecognition";
 
 interface ExerciseLevelsProps {
@@ -19,11 +20,18 @@ const ExerciseLevels = ({
 }: ExerciseLevelsProps) => {
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
   const [unlockedLevel, setUnlockedLevel] = useState(currentLevel);
+  const [completedLevels, setCompletedLevels] = useState<number[]>([]);
 
   const handleLevelComplete = () => {
-    // Update the progress and unlock the next level
-    if (selectedLevel === unlockedLevel && unlockedLevel < levels) {
-      setUnlockedLevel(prev => prev + 1);
+    if (selectedLevel) {
+      // Mark the current level as completed if it's not already
+      if (!completedLevels.includes(selectedLevel)) {
+        setCompletedLevels(prev => [...prev, selectedLevel]);
+      }
+      // Update the progress and unlock the next level
+      if (selectedLevel === unlockedLevel && unlockedLevel < levels) {
+        setUnlockedLevel(prev => prev + 1);
+      }
     }
     // Return to level selection
     setSelectedLevel(null);
@@ -54,11 +62,19 @@ const ExerciseLevels = ({
             {[...Array(levels)].map((_, i) => (
               <Card
                 key={i}
-                className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg relative ${
                   i + 1 <= unlockedLevel ? "bg-primary/10" : "bg-gray-100"
                 }`}
                 onClick={() => i + 1 <= unlockedLevel && setSelectedLevel(i + 1)}
               >
+                {completedLevels.includes(i + 1) && (
+                  <Badge 
+                    variant="secondary" 
+                    className="absolute top-2 right-2"
+                  >
+                    <CheckCircle className="w-4 h-4" />
+                  </Badge>
+                )}
                 <div className="text-2xl font-bold mb-2">
                   {i + 1 <= unlockedLevel ? (
                     i + 1
