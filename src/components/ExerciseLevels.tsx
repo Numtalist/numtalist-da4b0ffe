@@ -18,10 +18,15 @@ const ExerciseLevels = ({
   currentLevel = 1 
 }: ExerciseLevelsProps) => {
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
+  const [unlockedLevel, setUnlockedLevel] = useState(currentLevel);
 
   const handleLevelComplete = () => {
-    // Here you would typically update the progress and unlock the next level
-    console.log("Level completed!");
+    // Update the progress and unlock the next level
+    if (selectedLevel === unlockedLevel && unlockedLevel < levels) {
+      setUnlockedLevel(prev => prev + 1);
+    }
+    // Return to level selection
+    setSelectedLevel(null);
   };
 
   if (selectedLevel) {
@@ -43,19 +48,19 @@ const ExerciseLevels = ({
 
         <Card className="p-6 max-w-4xl mx-auto">
           <h2 className="text-xl font-semibold mb-4">Progress</h2>
-          <Progress value={(currentLevel / levels) * 100} className="mb-6" />
+          <Progress value={(unlockedLevel / levels) * 100} className="mb-6" />
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {[...Array(levels)].map((_, i) => (
               <Card
                 key={i}
                 className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                  i + 1 <= currentLevel ? "bg-primary/10" : "bg-gray-100"
+                  i + 1 <= unlockedLevel ? "bg-primary/10" : "bg-gray-100"
                 }`}
-                onClick={() => i + 1 <= currentLevel && setSelectedLevel(i + 1)}
+                onClick={() => i + 1 <= unlockedLevel && setSelectedLevel(i + 1)}
               >
                 <div className="text-2xl font-bold mb-2">
-                  {i + 1 <= currentLevel ? (
+                  {i + 1 <= unlockedLevel ? (
                     i + 1
                   ) : (
                     <Lock className="w-6 h-6 text-gray-400" />
