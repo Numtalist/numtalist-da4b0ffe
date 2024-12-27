@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import NumberCard from "./NumberCard";
 
 interface NumberRecognitionProps {
   level: number;
@@ -20,8 +20,8 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
   const { toast } = useToast();
 
   // Calculate difficulty parameters based on level
-  const displayTime = Math.max(1000 - (level - 1) * 100, 300); // Decreases from 1000ms to 300ms
-  const numChoices = Math.min(3 + Math.floor(level / 2), 8); // Increases from 3 to 8 choices
+  const displayTime = Math.max(1000 - (level - 1) * 100, 300);
+  const numChoices = Math.min(3 + Math.floor(level / 2), 8);
 
   const generateNumber = () => {
     // Increases digit count with level
@@ -135,16 +135,12 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
         <p className="text-gray-600">Level {level}</p>
       </div>
 
-      <Card className="w-48 h-48 flex flex-col items-center justify-center bg-gray-100 relative">
-        <div className="absolute top-2 left-2 bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center font-bold">
-          {level}
-        </div>
-        {(showNumber || showAnswer) ? (
-          <span className="text-6xl font-bold">{number}</span>
-        ) : (
-          <div className="w-32 h-32 bg-yellow-300" />
-        )}
-      </Card>
+      <NumberCard
+        level={level}
+        number={number}
+        showNumber={showNumber}
+        showAnswer={showAnswer}
+      />
 
       {!showNumber && !showAnswer && (
         <div className="grid grid-cols-3 gap-4 mt-8">
