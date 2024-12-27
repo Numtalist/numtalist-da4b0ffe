@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Lock, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import NumberRecognition from "./NumberRecognition";
+import Confetti from "react-confetti";
+import { useToast } from "@/hooks/use-toast";
 
 interface ExerciseLevelsProps {
   title: string;
@@ -21,13 +23,31 @@ const ExerciseLevels = ({
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
   const [unlockedLevel, setUnlockedLevel] = useState(currentLevel);
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const { toast } = useToast();
 
   const handleLevelComplete = () => {
     if (selectedLevel) {
       // Mark the current level as completed if it's not already
       if (!completedLevels.includes(selectedLevel)) {
-        setCompletedLevels(prev => [...prev, selectedLevel]);
+        const newCompletedLevels = [...completedLevels, selectedLevel];
+        setCompletedLevels(newCompletedLevels);
+        
+        // Check if all levels are completed
+        if (newCompletedLevels.length === levels) {
+          setShowConfetti(true);
+          toast({
+            title: "Congratulations! 🎉",
+            description: "You've completed all levels!",
+          });
+          
+          // Stop confetti after 5 seconds
+          setTimeout(() => {
+            setShowConfetti(false);
+          }, 5000);
+        }
       }
+      
       // Update the progress and unlock the next level
       if (selectedLevel === unlockedLevel && unlockedLevel < levels) {
         setUnlockedLevel(prev => prev + 1);
@@ -48,6 +68,14 @@ const ExerciseLevels = ({
 
   return (
     <div className="min-h-screen bg-background">
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={500}
+        />
+      )}
       <main className="pt-20 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
