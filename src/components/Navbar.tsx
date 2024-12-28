@@ -11,7 +11,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-8">
             <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 rounded-full bg-[#F97316] flex items-center justify-center">
-                {/* Orange circle logo */}
+                <div className="w-4 h-4 rounded-full bg-white"></div>
               </div>
               <span className="text-xl font-medium" style={{ fontFamily: 'Poppins' }}>numtalist</span>
             </Link>
