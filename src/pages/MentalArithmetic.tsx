@@ -2,6 +2,8 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import ActivityCard from "@/components/ActivityCard";
 import ExerciseLevels from "@/components/ExerciseLevels";
+import NumberRecognition from "@/components/NumberRecognition";
+import SequenceFlashing from "@/components/SequenceFlashing";
 
 const exercises = [
   {
@@ -104,12 +106,26 @@ const MentalArithmetic = () => {
     return (
       <div>
         <Navbar />
-        <ExerciseLevels
-          title={exercise.title}
-          description={exercise.description}
-          levels={8}
-          currentLevel={1}
-        />
+        {selectedExercise === 1 ? (
+          <ExerciseLevels
+            title={exercise.title}
+            description={exercise.description}
+            levels={8}
+            currentLevel={1}
+          />
+        ) : selectedExercise === 2 ? (
+          <ExerciseLevels
+            title={exercise.title}
+            description={exercise.description}
+            levels={8}
+            currentLevel={1}
+          />
+        ) : (
+          <div className="pt-20 px-4 text-center">
+            <h1 className="text-2xl font-bold">Coming Soon</h1>
+            <p className="mt-4">This exercise is under development.</p>
+          </div>
+        )}
       </div>
     );
   }

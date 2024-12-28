@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Lock, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import NumberRecognition from "./NumberRecognition";
+import SequenceFlashing from "./SequenceFlashing";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
 
@@ -28,12 +29,10 @@ const ExerciseLevels = ({
 
   const handleLevelComplete = () => {
     if (selectedLevel) {
-      // Mark the current level as completed if it's not already
       if (!completedLevels.includes(selectedLevel)) {
         const newCompletedLevels = [...completedLevels, selectedLevel];
         setCompletedLevels(newCompletedLevels);
         
-        // Check if all levels are completed
         if (newCompletedLevels.length === levels) {
           setShowConfetti(true);
           toast({
@@ -41,25 +40,26 @@ const ExerciseLevels = ({
             description: "You've completed all levels!",
           });
           
-          // Stop confetti after 5 seconds
           setTimeout(() => {
             setShowConfetti(false);
           }, 5000);
         }
       }
       
-      // Update the progress and unlock the next level
       if (selectedLevel === unlockedLevel && unlockedLevel < levels) {
         setUnlockedLevel(prev => prev + 1);
       }
     }
-    // Return to level selection
     setSelectedLevel(null);
   };
 
   if (selectedLevel) {
+    const ExerciseComponent = title === "Sequence Flashing" 
+      ? SequenceFlashing 
+      : NumberRecognition;
+
     return (
-      <NumberRecognition 
+      <ExerciseComponent 
         level={selectedLevel} 
         onComplete={handleLevelComplete}
       />
