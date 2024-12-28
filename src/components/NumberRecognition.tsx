@@ -139,7 +139,6 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
       <div className="relative">
         <LevelDisplay level={level} />
         <NumberCard
-          level={level}
           number={number}
           showNumber={showNumber}
           showAnswer={showAnswer}

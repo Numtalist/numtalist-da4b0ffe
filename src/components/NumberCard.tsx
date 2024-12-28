@@ -2,7 +2,6 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 
 interface NumberCardProps {
-  level: number;
   number: number;
   showNumber: boolean;
   showAnswer: boolean;

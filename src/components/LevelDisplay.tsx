@@ -6,8 +6,10 @@ interface LevelDisplayProps {
 
 const LevelDisplay = ({ level }: LevelDisplayProps) => {
   return (
-    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gray-200 px-4 py-1 rounded-md text-sm">
-      level {level}
+    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
+      <span className="px-3 py-1 bg-gray-200 rounded-full text-sm text-gray-600">
+        level {level}
+      </span>
     </div>
   );
 };
