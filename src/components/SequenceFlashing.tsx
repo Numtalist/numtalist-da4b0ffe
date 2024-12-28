@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import NumberCard from "./NumberCard";
+import LevelDisplay from "./LevelDisplay";
 
 interface SequenceFlashingProps {
   level: number;
@@ -126,13 +127,15 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
 
       <div className="flex justify-center items-center gap-4">
         {sequence.map((num, index) => (
-          <NumberCard
-            key={index}
-            level={level}
-            number={num}
-            showNumber={showingSequence && currentIndex === index}
-            showAnswer={false}
-          />
+          <div key={index} className="relative">
+            <LevelDisplay level={level} />
+            <NumberCard
+              level={level}
+              number={num}
+              showNumber={showingSequence && currentIndex === index}
+              showAnswer={false}
+            />
+          </div>
         ))}
       </div>
 

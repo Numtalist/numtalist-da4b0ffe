@@ -1,6 +1,5 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
-import LevelDisplay from "./LevelDisplay";
 
 interface NumberCardProps {
   level: number;
@@ -9,10 +8,9 @@ interface NumberCardProps {
   showAnswer: boolean;
 }
 
-const NumberCard = ({ level, number, showNumber, showAnswer }: NumberCardProps) => {
+const NumberCard = ({ number, showNumber, showAnswer }: NumberCardProps) => {
   return (
-    <Card className="w-48 h-48 flex flex-col items-center justify-center bg-white p-4 relative">
-      <LevelDisplay level={level} />
+    <Card className="w-48 h-48 flex flex-col items-center justify-center bg-white p-4">
       {(showNumber || showAnswer) ? (
         <span className="text-6xl font-bold">{number}</span>
       ) : (

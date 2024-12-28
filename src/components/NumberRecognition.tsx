@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import NumberCard from "./NumberCard";
+import LevelDisplay from "./LevelDisplay";
 
 interface NumberRecognitionProps {
   level: number;
@@ -135,12 +136,15 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
         <p className="text-gray-600">Level {level}</p>
       </div>
 
-      <NumberCard
-        level={level}
-        number={number}
-        showNumber={showNumber}
-        showAnswer={showAnswer}
-      />
+      <div className="relative">
+        <LevelDisplay level={level} />
+        <NumberCard
+          level={level}
+          number={number}
+          showNumber={showNumber}
+          showAnswer={showAnswer}
+        />
+      </div>
 
       {!showNumber && !showAnswer && (
         <div className="grid grid-cols-3 gap-4 mt-8">
