@@ -138,22 +138,24 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
 
       {!showingSequence && currentIndex === -1 && !isCorrect && (
         <div className="mt-8">
-          <div className="grid grid-cols-3 gap-4">
-            {sequence.map((num, index) => (
-              <Button
-                key={index}
-                onClick={() => handleNumberSelect(num)}
-                variant={
-                  userSequence[userSequence.length - 1] === num
-                    ? "default"
-                    : "outline"
-                }
-                className="w-16 h-16 text-2xl"
-                disabled={userSequence.length === sequence.length}
-              >
-                {num}
-              </Button>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-[400px]">
+            {sequence
+              .sort((a, b) => a - b)
+              .map((num, index) => (
+                <Button
+                  key={index}
+                  onClick={() => handleNumberSelect(num)}
+                  variant={
+                    userSequence[userSequence.length - 1] === num
+                      ? "default"
+                      : "outline"
+                  }
+                  className="w-16 h-16 text-2xl"
+                  disabled={userSequence.length === sequence.length}
+                >
+                  {num}
+                </Button>
+              ))}
           </div>
           <div className="mt-4 text-center">
             <p className="text-gray-600">
