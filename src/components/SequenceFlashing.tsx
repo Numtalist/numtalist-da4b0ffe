@@ -104,12 +104,10 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
   if (!gameStarted) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 relative">
+          <LevelDisplay level={level} />
           <h2 className="text-2xl font-bold mb-2">Sequence Flashing</h2>
-          <p className="text-gray-600">Level {level}</p>
-          <p className="text-gray-600 mt-4">
-            Remember the sequence of numbers and tap them in the correct order.
-          </p>
+          <p className="text-gray-600">Remember the sequence of numbers and tap them in the correct order.</p>
         </div>
         <Button onClick={startGame} size="lg">
           Start Game
@@ -120,15 +118,15 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
-      <div className="text-center mb-4">
+      <div className="text-center mb-4 relative">
+        <LevelDisplay level={level} />
         <h2 className="text-2xl font-bold mb-2">Sequence Flashing</h2>
         <p className="text-gray-600">Level {level}</p>
       </div>
 
       <div className="flex justify-center items-center gap-4">
         {sequence.map((num, index) => (
-          <div key={index} className="relative">
-            <LevelDisplay level={level} />
+          <div key={index}>
             <NumberCard
               level={level}
               number={num}

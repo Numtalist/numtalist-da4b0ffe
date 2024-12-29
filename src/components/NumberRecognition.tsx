@@ -115,12 +115,10 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
   if (!gameStarted) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 relative">
+          <LevelDisplay level={level} />
           <h2 className="text-2xl font-bold mb-2">Number Recognition</h2>
-          <p className="text-gray-600">Level {level}</p>
-          <p className="text-gray-600 mt-4">
-            Remember the number shown and select it from the choices below.
-          </p>
+          <p className="text-gray-600">Remember the number shown and select it from the choices below.</p>
         </div>
         <Button onClick={startGame} size="lg">
           Start Game
@@ -131,13 +129,13 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
-      <div className="text-center mb-4">
+      <div className="text-center mb-4 relative">
+        <LevelDisplay level={level} />
         <h2 className="text-2xl font-bold mb-2">Number Recognition</h2>
-        <p className="text-gray-600">Level {level}</p>
+        <p className="text-gray-600">Remember the number</p>
       </div>
 
-      <div className="relative">
-        <LevelDisplay level={level} />
+      <div>
         <NumberCard
           number={number}
           showNumber={showNumber}

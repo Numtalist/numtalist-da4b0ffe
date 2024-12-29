@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 
 interface NumberCardProps {
@@ -9,12 +8,12 @@ interface NumberCardProps {
 
 const NumberCard = ({ number, showNumber, showAnswer }: NumberCardProps) => {
   return (
-    <Card className="w-48 h-48 flex flex-col items-center justify-center bg-white p-4">
-      {(showNumber || showAnswer) ? (
-        <span className="text-6xl font-bold">{number}</span>
-      ) : (
-        <div className="w-32 h-32 bg-[#FEF7CD] rounded-2xl border-4 border-white shadow-lg" />
-      )}
+    <Card className="w-48 h-48 flex items-center justify-center bg-white shadow-md">
+      <div className="w-40 h-40 rounded-lg bg-yellow-50 flex items-center justify-center">
+        <span className={`text-4xl font-bold ${showNumber || showAnswer ? '' : 'opacity-0'}`}>
+          {number}
+        </span>
+      </div>
     </Card>
   );
 };
