@@ -128,7 +128,6 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
         {sequence.map((num, index) => (
           <div key={index}>
             <NumberCard
-              level={level}
               number={num}
               showNumber={showingSequence && currentIndex === index}
               showAnswer={false}
