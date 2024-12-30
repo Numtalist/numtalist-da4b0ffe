@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Lock, CheckCircle } from "lucide-react";
+import { Lock, CheckCircle, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import NumberRecognition from "./NumberRecognition";
 import SequenceFlashing from "./SequenceFlashing";
 import Confetti from "react-confetti";
@@ -21,6 +23,7 @@ const ExerciseLevels = ({
   levels = 8, 
   currentLevel = 1 
 }: ExerciseLevelsProps) => {
+  const navigate = useNavigate();
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
   const [unlockedLevel, setUnlockedLevel] = useState(currentLevel);
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
@@ -59,10 +62,19 @@ const ExerciseLevels = ({
       : NumberRecognition;
 
     return (
-      <ExerciseComponent 
-        level={selectedLevel} 
-        onComplete={handleLevelComplete}
-      />
+      <div>
+        <Button
+          variant="ghost"
+          className="absolute top-24 left-4 flex items-center gap-2"
+          onClick={() => setSelectedLevel(null)}
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to Levels
+        </Button>
+        <ExerciseComponent 
+          level={selectedLevel} 
+          onComplete={handleLevelComplete}
+        />
+      </div>
     );
   }
 
@@ -77,6 +89,14 @@ const ExerciseLevels = ({
         />
       )}
       <main className="pt-20 px-4 max-w-7xl mx-auto">
+        <Button
+          variant="ghost"
+          className="mb-8 flex items-center gap-2"
+          onClick={() => navigate('/mental-arithmetic')}
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to Exercises
+        </Button>
+
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
           <p className="text-gray-600">{description}</p>
