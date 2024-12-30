@@ -6,17 +6,21 @@ interface BackButtonProps {
   to?: string;
   label?: string;
   className?: string;
+  onClick?: () => void;
 }
 
 const BackButton = ({ 
   to, 
   label = "Back", 
-  className = "" 
+  className = "",
+  onClick
 }: BackButtonProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (to) {
+    if (onClick) {
+      onClick();
+    } else if (to) {
       navigate(to);
     } else {
       navigate(-1);
