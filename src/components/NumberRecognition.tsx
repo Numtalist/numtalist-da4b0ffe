@@ -135,7 +135,7 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
         <p className="text-gray-600">Remember the number</p>
       </div>
 
-      <div>
+      <div className="w-full max-w-[10rem]">
         <NumberCard
           number={number}
           showNumber={showNumber}
@@ -144,7 +144,7 @@ const NumberRecognition = ({ level, onComplete }: NumberRecognitionProps) => {
       </div>
 
       {!showNumber && !showAnswer && (
-        <div className="grid grid-cols-3 gap-4 mt-8">
+        <div className="grid grid-cols-3 gap-4 w-full max-w-[300px] place-items-center">
           {choices.map((choice, index) => (
             <Button
               key={index}

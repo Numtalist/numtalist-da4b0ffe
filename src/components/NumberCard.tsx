@@ -8,7 +8,7 @@ interface NumberCardProps {
 
 const NumberCard = ({ number, showNumber, showAnswer }: NumberCardProps) => {
   return (
-    <Card className="w-full max-w-[10rem] aspect-square flex items-center justify-center bg-white shadow-md">
+    <Card className="w-full aspect-square flex items-center justify-center bg-white shadow-md">
       <div className="w-[85%] aspect-square rounded-lg bg-[#F97316] bg-opacity-20 flex items-center justify-center">
         <span className={`text-3xl font-bold ${showNumber || showAnswer ? '' : 'opacity-0'}`}>
           {number}
