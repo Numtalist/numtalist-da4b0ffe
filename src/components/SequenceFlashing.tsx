@@ -127,7 +127,11 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
         <p className="text-gray-600">Level {level}</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-4xl place-items-center">
+      <div className={`grid auto-rows-auto gap-4 w-full max-w-6xl place-items-center mx-auto ${
+        sequence.length > 4 
+          ? 'grid-cols-5' 
+          : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+      }`}>
         {sequence.map((num, index) => (
           <div key={index} className="w-full flex justify-center">
             <NumberCard
