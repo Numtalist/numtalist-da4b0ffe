@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Lock, CheckCircle, ArrowLeft } from "lucide-react";
+import { Lock, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import NumberRecognition from "./NumberRecognition";
 import SequenceFlashing from "./SequenceFlashing";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
+import BackButton from "./BackButton";
 
 interface ExerciseLevelsProps {
   title: string;
@@ -23,7 +22,6 @@ const ExerciseLevels = ({
   levels = 8, 
   currentLevel = 1 
 }: ExerciseLevelsProps) => {
-  const navigate = useNavigate();
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
   const [unlockedLevel, setUnlockedLevel] = useState(currentLevel);
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
@@ -63,13 +61,11 @@ const ExerciseLevels = ({
 
     return (
       <div>
-        <Button
-          variant="ghost"
-          className="absolute top-24 left-4 flex items-center gap-2"
+        <BackButton 
+          className="absolute top-24 left-4" 
+          label="Back to Levels"
           onClick={() => setSelectedLevel(null)}
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Levels
-        </Button>
+        />
         <ExerciseComponent 
           level={selectedLevel} 
           onComplete={handleLevelComplete}
@@ -89,13 +85,11 @@ const ExerciseLevels = ({
         />
       )}
       <main className="pt-20 px-4 max-w-7xl mx-auto">
-        <Button
-          variant="ghost"
-          className="mb-8 flex items-center gap-2"
-          onClick={() => navigate('/mental-arithmetic')}
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Exercises
-        </Button>
+        <BackButton 
+          to="/mental-arithmetic"
+          label="Back to Exercises"
+          className="mb-8"
+        />
 
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
