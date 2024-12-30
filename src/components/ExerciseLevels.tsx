@@ -7,7 +7,6 @@ import NumberRecognition from "./NumberRecognition";
 import SequenceFlashing from "./SequenceFlashing";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
-import BackButton from "./BackButton";
 
 interface ExerciseLevelsProps {
   title: string;
@@ -61,11 +60,6 @@ const ExerciseLevels = ({
 
     return (
       <div>
-        <BackButton 
-          className="absolute top-24 left-4" 
-          label="Back to Levels"
-          onClick={() => setSelectedLevel(null)}
-        />
         <ExerciseComponent 
           level={selectedLevel} 
           onComplete={handleLevelComplete}
@@ -85,12 +79,6 @@ const ExerciseLevels = ({
         />
       )}
       <main className="pt-20 px-4 max-w-7xl mx-auto">
-        <BackButton 
-          to="/mental-arithmetic"
-          label="Back to Exercises"
-          className="mb-8"
-        />
-
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
           <p className="text-gray-600">{description}</p>
