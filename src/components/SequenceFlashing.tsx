@@ -76,12 +76,8 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
     setUserSequence(newUserSequence);
 
     if (newUserSequence.length === sequence.length) {
-      // Sort both arrays and compare them to check if same numbers are selected
-      const sortedUserSequence = [...newUserSequence].sort((a, b) => a - b);
-      const sortedSequence = [...sequence].sort((a, b) => a - b);
-      const correct = sortedUserSequence.every(
-        (num, index) => num === sortedSequence[index]
-      );
+      // Check if sequences match exactly in order
+      const correct = sequence.every((num, index) => num === newUserSequence[index]);
       setIsCorrect(correct);
 
       if (correct) {
