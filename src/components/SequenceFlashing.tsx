@@ -76,8 +76,10 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
     setUserSequence(newUserSequence);
 
     if (newUserSequence.length === sequence.length) {
-      // Check if sequences match exactly in order
-      const correct = sequence.every((num, index) => num === newUserSequence[index]);
+      // Compare sequences directly to ensure exact order match
+      const correct = newUserSequence.every(
+        (num, index) => num === sequence[index]
+      );
       setIsCorrect(correct);
 
       if (correct) {
