@@ -59,7 +59,7 @@ const ExerciseLevels = ({
       : NumberRecognition;
 
     return (
-      <div>
+      <div className="flex justify-center items-center min-h-screen">
         <ExerciseComponent 
           level={selectedLevel} 
           onComplete={handleLevelComplete}
@@ -93,7 +93,7 @@ const ExerciseLevels = ({
               <Card
                 key={i}
                 className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg relative ${
-                  i + 1 <= unlockedLevel ? "bg-primary/10" : "bg-gray-100"
+                  i + 1 <= unlockedLevel ? "bg-[#FEC6A1]" : "bg-[#F1F1F1]"
                 }`}
                 onClick={() => i + 1 <= unlockedLevel && setSelectedLevel(i + 1)}
               >

@@ -8,8 +8,10 @@ interface NumberCardProps {
 
 const NumberCard = ({ number, showNumber, showAnswer }: NumberCardProps) => {
   return (
-    <Card className="w-full aspect-square flex items-center justify-center bg-white shadow-md">
-      <div className="w-[85%] aspect-square rounded-lg bg-[#F97316] bg-opacity-20 flex items-center justify-center">
+    <Card className={`w-full aspect-square flex items-center justify-center transition-colors duration-300 ${
+      showNumber || showAnswer ? 'bg-[#F1F1F1]' : 'bg-[#FEC6A1]'
+    }`}>
+      <div className="w-[85%] aspect-square rounded-lg flex items-center justify-center">
         <span className={`text-3xl font-bold ${showNumber || showAnswer ? '' : 'opacity-0'}`}>
           {number}
         </span>
