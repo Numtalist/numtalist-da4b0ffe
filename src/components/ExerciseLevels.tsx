@@ -89,32 +89,39 @@ const ExerciseLevels = ({
           <Progress value={(unlockedLevel / levels) * 100} className="mb-6" />
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {[...Array(levels)].map((_, i) => (
-              <Card
-                key={i}
-                className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg relative ${
-                  i + 1 <= unlockedLevel ? "bg-[#FEC6A1]" : "bg-[#F1F1F1]"
-                }`}
-                onClick={() => i + 1 <= unlockedLevel && setSelectedLevel(i + 1)}
-              >
-                {completedLevels.includes(i + 1) && (
-                  <Badge 
-                    variant="secondary" 
-                    className="absolute top-2 right-2"
-                  >
-                    <CheckCircle className="w-4 h-4" />
-                  </Badge>
-                )}
-                <div className="text-2xl font-bold mb-2">
-                  {i + 1 <= unlockedLevel ? (
-                    i + 1
-                  ) : (
-                    <Lock className="w-6 h-6 text-gray-400" />
+            {[...Array(levels)].map((_, i) => {
+              const isCompleted = completedLevels.includes(i + 1);
+              const isUnlocked = i + 1 <= unlockedLevel;
+              
+              return (
+                <Card
+                  key={i}
+                  className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg relative ${
+                    isCompleted ? "bg-[#F1F1F1]" : 
+                    isUnlocked ? "bg-[#FEC6A1]" : 
+                    "bg-gray-400"
+                  }`}
+                  onClick={() => isUnlocked && setSelectedLevel(i + 1)}
+                >
+                  {isCompleted && (
+                    <Badge 
+                      variant="secondary" 
+                      className="absolute top-2 right-2"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                    </Badge>
                   )}
-                </div>
-                <p className="text-sm text-gray-600">Level {i + 1}</p>
-              </Card>
-            ))}
+                  <div className="text-2xl font-bold mb-2">
+                    {isUnlocked ? (
+                      i + 1
+                    ) : (
+                      <Lock className="w-6 h-6 text-gray-100" />
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-600">Level {i + 1}</p>
+                </Card>
+              );
+            })}
           </div>
         </Card>
       </main>
