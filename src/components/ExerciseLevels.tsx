@@ -92,14 +92,16 @@ const ExerciseLevels = ({
             {[...Array(levels)].map((_, i) => {
               const isCompleted = completedLevels.includes(i + 1);
               const isUnlocked = i + 1 <= unlockedLevel;
+              const isCurrentLevel = i + 1 === unlockedLevel;
               
               return (
                 <Card
                   key={i}
                   className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg relative ${
-                    isCompleted ? "bg-[#F1F1F1]" : 
-                    isUnlocked ? "bg-[#FEC6A1]" : 
-                    "bg-gray-400"
+                    isCompleted ? "bg-[#F1F1F1] text-gray-900" : 
+                    isCurrentLevel ? "bg-[#FF7E1D] text-white" : 
+                    isUnlocked ? "bg-[#FF7E1D] text-white" : 
+                    "bg-gray-400 text-gray-100"
                   }`}
                   onClick={() => isUnlocked && setSelectedLevel(i + 1)}
                 >
@@ -115,10 +117,12 @@ const ExerciseLevels = ({
                     {isUnlocked ? (
                       i + 1
                     ) : (
-                      <Lock className="w-6 h-6 text-gray-100" />
+                      <Lock className="w-6 h-6" />
                     )}
                   </div>
-                  <p className="text-sm text-gray-600">Level {i + 1}</p>
+                  <p className={`text-sm ${isUnlocked ? "text-white" : "text-gray-100"}`}>
+                    Level {i + 1}
+                  </p>
                 </Card>
               );
             })}
