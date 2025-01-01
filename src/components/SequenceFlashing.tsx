@@ -17,6 +17,7 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [randomizedButtons, setRandomizedButtons] = useState<number[]>([]);
   const { toast } = useToast();
 
   // Calculate difficulty parameters based on level
@@ -38,9 +39,19 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
     return newSequence;
   };
 
+  const shuffleArray = (array: number[]) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   const startNewRound = () => {
     const newSequence = generateSequence();
     setSequence(newSequence);
+    setRandomizedButtons(shuffleArray([...newSequence]));
     setUserSequence([]);
     setShowingSequence(true);
     setCurrentIndex(0);
@@ -78,8 +89,10 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
 
     // Check if this selection completes the sequence
     if (newUserSequence.length === sequence.length) {
-      // Compare each number in the sequence at the same position
-      const correct = newUserSequence.every((num, index) => sequence[index] === num);
+      // Compare sequences directly to ensure exact order match
+      const correct = newUserSequence.every(
+        (num, index) => num === sequence[index]
+      );
       setIsCorrect(correct);
 
       if (correct) {
@@ -140,23 +153,21 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
       {!showingSequence && currentIndex === -1 && !isCorrect && (
         <div className="mt-8 w-full max-w-md mx-auto">
           <div className="grid grid-cols-3 gap-4">
-            {sequence
-              .sort((a, b) => a - b)
-              .map((num, index) => (
-                <Button
-                  key={index}
-                  onClick={() => handleNumberSelect(num)}
-                  variant={
-                    userSequence[userSequence.length - 1] === num
-                      ? "default"
-                      : "outline"
-                  }
-                  className="w-full h-16 text-2xl"
-                  disabled={userSequence.length === sequence.length}
-                >
-                  {num}
-                </Button>
-              ))}
+            {randomizedButtons.map((num, index) => (
+              <Button
+                key={index}
+                onClick={() => handleNumberSelect(num)}
+                variant={
+                  userSequence[userSequence.length - 1] === num
+                    ? "default"
+                    : "outline"
+                }
+                className="w-full h-16 text-2xl"
+                disabled={userSequence.length === sequence.length}
+              >
+                {num}
+              </Button>
+            ))}
           </div>
           <div className="mt-4 text-center">
             <p className="text-gray-600">
