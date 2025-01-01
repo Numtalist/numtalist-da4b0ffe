@@ -46,7 +46,6 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
     setCurrentIndex(0);
     setIsCorrect(null);
 
-    // Show sequence one number at a time
     let index = 0;
     const interval = setInterval(() => {
       if (index < newSequence.length) {
@@ -72,14 +71,15 @@ const SequenceFlashing = ({ level, onComplete }: SequenceFlashingProps) => {
   }, [level]);
 
   const handleNumberSelect = (number: number) => {
+    if (userSequence.length >= sequence.length) return;
+    
     const newUserSequence = [...userSequence, number];
     setUserSequence(newUserSequence);
 
+    // Check if this selection completes the sequence
     if (newUserSequence.length === sequence.length) {
-      // Compare sequences directly to ensure exact order match
-      const correct = newUserSequence.every(
-        (num, index) => num === sequence[index]
-      );
+      // Compare each number in the sequence at the same position
+      const correct = newUserSequence.every((num, index) => sequence[index] === num);
       setIsCorrect(correct);
 
       if (correct) {
