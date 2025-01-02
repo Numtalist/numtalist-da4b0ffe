@@ -41,9 +41,15 @@ const MentalArithmetic = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Mental Arithmetic Exercises
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 mb-4">
             Choose an exercise to begin practicing
           </p>
+          <div className="space-y-2 text-sm text-red-500 font-medium">
+            <p>"Every Exercise, a Unique Challenge – No Repeats, Just Growth!"</p>
+            <p className="italic">
+              "Even after completing the level map, replaying offers a fresh and exciting experience every time!"
+            </p>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
