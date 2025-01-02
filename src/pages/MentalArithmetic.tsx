@@ -2,9 +2,6 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import ExerciseLevels from "@/components/ExerciseLevels";
 import ActivityCard from "@/components/ActivityCard";
-import NumberRecognition from "@/components/NumberRecognition";
-import SequenceFlashing from "@/components/SequenceFlashing";
-import MathProblems from "@/components/MathProblems";
 
 const MentalArithmetic = () => {
   const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
@@ -13,10 +10,6 @@ const MentalArithmetic = () => {
   const handleExerciseSelect = (exercise: string) => {
     setSelectedExercise(exercise);
     setCurrentLevel(1);
-  };
-
-  const handleLevelComplete = () => {
-    setCurrentLevel((prev) => prev + 1);
   };
 
   if (selectedExercise) {
@@ -31,29 +24,10 @@ const MentalArithmetic = () => {
             ← Back to exercises
           </button>
           <ExerciseLevels
-            exercise={selectedExercise}
+            title={selectedExercise}
+            description={getExerciseDescription(selectedExercise)}
             currentLevel={currentLevel}
-            onLevelComplete={handleLevelComplete}
-          >
-            {selectedExercise === "Number Recognition" && (
-              <NumberRecognition
-                level={currentLevel}
-                onComplete={handleLevelComplete}
-              />
-            )}
-            {selectedExercise === "Sequence Flashing" && (
-              <SequenceFlashing
-                level={currentLevel}
-                onComplete={handleLevelComplete}
-              />
-            )}
-            {selectedExercise === "Math Problems" && (
-              <MathProblems
-                level={currentLevel}
-                onComplete={handleLevelComplete}
-              />
-            )}
-          </ExerciseLevels>
+          />
         </div>
       </div>
     );
@@ -95,6 +69,19 @@ const MentalArithmetic = () => {
       </main>
     </div>
   );
+};
+
+const getExerciseDescription = (exercise: string): string => {
+  switch (exercise) {
+    case "Number Recognition":
+      return "Practice quick number recognition with timed exercises";
+    case "Sequence Flashing":
+      return "Remember and recall sequences of numbers";
+    case "Math Problems":
+      return "Solve addition, subtraction, and multiplication problems";
+    default:
+      return "";
+  }
 };
 
 export default MentalArithmetic;

@@ -12,9 +12,34 @@ import { useToast } from "@/hooks/use-toast";
 interface ExerciseLevelsProps {
   title: string;
   description: string;
-  levels: number;
+  levels?: number;
   currentLevel?: number;
 }
+
+const getExerciseDetails = (title: string) => {
+  switch (title) {
+    case "Number Recognition":
+      return {
+        description: "Practice quick number recognition with timed exercises",
+        levels: 8
+      };
+    case "Sequence Flashing":
+      return {
+        description: "Remember and recall sequences of numbers",
+        levels: 8
+      };
+    case "Math Problems":
+      return {
+        description: "Solve addition, subtraction, and multiplication problems",
+        levels: 8
+      };
+    default:
+      return {
+        description: "",
+        levels: 8
+      };
+  }
+};
 
 const ExerciseLevels = ({ 
   title, 
