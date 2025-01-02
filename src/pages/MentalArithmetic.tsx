@@ -1,131 +1,60 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
-import ActivityCard from "@/components/ActivityCard";
 import ExerciseLevels from "@/components/ExerciseLevels";
+import ActivityCard from "@/components/ActivityCard";
 import NumberRecognition from "@/components/NumberRecognition";
 import SequenceFlashing from "@/components/SequenceFlashing";
-
-const exercises = [
-  {
-    id: 1,
-    title: "Number Recognition",
-    description: "Learn to quickly recognize single-digit numbers",
-    level: 1,
-  },
-  {
-    id: 2,
-    title: "Sequence Flashing",
-    description: "Remember and recall sequences of numbers",
-    level: 1,
-  },
-  {
-    id: 3,
-    title: "Math Problems",
-    description: "Solve simple addition, subtraction, and multiplication problems",
-    level: 1,
-  },
-  {
-    id: 4,
-    title: "Missing Numbers",
-    description: "Find the missing number in a sequence",
-    level: 2,
-  },
-  {
-    id: 5,
-    title: "Number Comparison",
-    description: "Choose the larger or smaller number",
-    level: 2,
-  },
-  {
-    id: 6,
-    title: "Memory Challenge",
-    description: "Remember and recall sets of numbers",
-    level: 3,
-  },
-  {
-    id: 7,
-    title: "Timed Calculations",
-    description: "Solve math problems within a time limit",
-    level: 3,
-  },
-  {
-    id: 8,
-    title: "Number Puzzles",
-    description: "Complete number patterns and equations",
-    level: 3,
-  },
-  {
-    id: 9,
-    title: "Multiplication Tables",
-    description: "Practice multiplication facts with a fun game",
-    level: 4,
-  },
-  {
-    id: 10,
-    title: "Gamified Counting",
-    description: "Count objects and match with numbers",
-    level: 1,
-  },
-  {
-    id: 11,
-    title: "Number Sorting",
-    description: "Sort numbers in ascending or descending order",
-    level: 4,
-  },
-  {
-    id: 12,
-    title: "Math Stories",
-    description: "Solve real-world math problems",
-    level: 3,
-  },
-  {
-    id: 13,
-    title: "Fractions and Decimals",
-    description: "Learn equivalent forms of numbers",
-    level: 5,
-  },
-  {
-    id: 14,
-    title: "Number Speed Drills",
-    description: "Practice quick number recognition",
-    level: 5,
-  },
-];
+import MathProblems from "@/components/MathProblems";
 
 const MentalArithmetic = () => {
-  const [selectedExercise, setSelectedExercise] = useState<number | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
+  const [currentLevel, setCurrentLevel] = useState(1);
 
-  const handleExerciseClick = (id: number) => {
-    setSelectedExercise(id);
+  const handleExerciseSelect = (exercise: string) => {
+    setSelectedExercise(exercise);
+    setCurrentLevel(1);
+  };
+
+  const handleLevelComplete = () => {
+    setCurrentLevel((prev) => prev + 1);
   };
 
   if (selectedExercise) {
-    const exercise = exercises.find((ex) => ex.id === selectedExercise);
-    if (!exercise) return null;
-
     return (
-      <div>
+      <div className="min-h-screen bg-background">
         <Navbar />
-        {selectedExercise === 1 ? (
+        <div className="pt-20 px-4">
+          <button
+            onClick={() => setSelectedExercise(null)}
+            className="mb-4 text-primary hover:text-primary/80"
+          >
+            ← Back to exercises
+          </button>
           <ExerciseLevels
-            title={exercise.title}
-            description={exercise.description}
-            levels={8}
-            currentLevel={1}
-          />
-        ) : selectedExercise === 2 ? (
-          <ExerciseLevels
-            title={exercise.title}
-            description={exercise.description}
-            levels={8}
-            currentLevel={1}
-          />
-        ) : (
-          <div className="pt-20 px-4 text-center">
-            <h1 className="text-2xl font-bold">Coming Soon</h1>
-            <p className="mt-4">This exercise is under development.</p>
-          </div>
-        )}
+            exercise={selectedExercise}
+            currentLevel={currentLevel}
+            onLevelComplete={handleLevelComplete}
+          >
+            {selectedExercise === "Number Recognition" && (
+              <NumberRecognition
+                level={currentLevel}
+                onComplete={handleLevelComplete}
+              />
+            )}
+            {selectedExercise === "Sequence Flashing" && (
+              <SequenceFlashing
+                level={currentLevel}
+                onComplete={handleLevelComplete}
+              />
+            )}
+            {selectedExercise === "Math Problems" && (
+              <MathProblems
+                level={currentLevel}
+                onComplete={handleLevelComplete}
+              />
+            )}
+          </ExerciseLevels>
+        </div>
       </div>
     );
   }
@@ -135,22 +64,33 @@ const MentalArithmetic = () => {
       <Navbar />
       <main className="pt-20 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Mental Arithmetic Exercises
           </h1>
-          <p className="text-gray-600">Select an exercise to begin</p>
+          <p className="text-lg text-gray-600">
+            Choose an exercise to begin practicing
+          </p>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {exercises.map((exercise) => (
-            <ActivityCard
-              key={exercise.id}
-              title={exercise.title}
-              description={exercise.description}
-              onClick={() => handleExerciseClick(exercise.id)}
-              className="bg-white hover:bg-gray-50"
-            />
-          ))}
+        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <ActivityCard
+            title="Number Recognition"
+            description="Practice quick number recognition with timed exercises"
+            onClick={() => handleExerciseSelect("Number Recognition")}
+            className="bg-gradient-to-br from-primary/10 to-primary/5"
+          />
+          <ActivityCard
+            title="Sequence Flashing"
+            description="Remember and recall sequences of numbers"
+            onClick={() => handleExerciseSelect("Sequence Flashing")}
+            className="bg-gradient-to-br from-secondary/10 to-secondary/5"
+          />
+          <ActivityCard
+            title="Math Problems"
+            description="Solve addition, subtraction, and multiplication problems"
+            onClick={() => handleExerciseSelect("Math Problems")}
+            className="bg-gradient-to-br from-[#FF7E1D]/10 to-[#FF7E1D]/5"
+          />
         </div>
       </main>
     </div>
@@ -158,4 +98,3 @@ const MentalArithmetic = () => {
 };
 
 export default MentalArithmetic;
-
