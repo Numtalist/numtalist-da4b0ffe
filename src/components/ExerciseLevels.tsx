@@ -5,6 +5,7 @@ import { Lock, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import NumberRecognition from "./NumberRecognition";
 import SequenceFlashing from "./SequenceFlashing";
+import MathProblems from "./MathProblems";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
 
@@ -54,9 +55,17 @@ const ExerciseLevels = ({
   };
 
   if (selectedLevel) {
-    const ExerciseComponent = title === "Sequence Flashing" 
-      ? SequenceFlashing 
-      : NumberRecognition;
+    let ExerciseComponent;
+    switch (title) {
+      case "Sequence Flashing":
+        ExerciseComponent = SequenceFlashing;
+        break;
+      case "Math Problems":
+        ExerciseComponent = MathProblems;
+        break;
+      default:
+        ExerciseComponent = NumberRecognition;
+    }
 
     return (
       <div className="flex justify-center items-center min-h-screen">

@@ -22,7 +22,7 @@ const exercises = [
     id: 3,
     title: "Math Problems",
     description: "Solve simple addition, subtraction, and multiplication problems",
-    level: 2,
+    level: 1,
   },
   {
     id: 4,
@@ -158,3 +158,4 @@ const MentalArithmetic = () => {
 };
 
 export default MentalArithmetic;
+
