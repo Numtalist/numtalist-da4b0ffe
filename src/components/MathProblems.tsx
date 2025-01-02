@@ -78,11 +78,13 @@ const MathProblems = ({ level, onComplete }: MathProblemsProps) => {
       toast({
         title: "Correct! 🎉",
         description: "Well done! Click 'Next Level' to continue.",
+        duration: 3000, // Toast will disappear after 3 seconds
       });
     } else {
       toast({
         title: "Think again! 🤔",
         description: "That's not the right answer. Try again!",
+        duration: 3000, // Toast will disappear after 3 seconds
       });
     }
   };
