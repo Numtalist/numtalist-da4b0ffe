@@ -75,7 +75,7 @@ const MentalArithmetic = () => {
             title="Missing Numbers"
             description="Numerical patterns and logical thinking."
             onClick={() => handleExerciseSelect("Missing Numbers")}
-            className="bg-gradient-to-br from-[#FF7E1D]/10 to-[#FF7E1D]/5"
+            className="bg-gradient-to-br from-primary/10 to-primary/5"
           />
         </div>
       </main>
