@@ -71,6 +71,12 @@ const MentalArithmetic = () => {
             onClick={() => handleExerciseSelect("Math Problems")}
             className="bg-gradient-to-br from-[#FF7E1D]/10 to-[#FF7E1D]/5"
           />
+          <ActivityCard
+            title="Missing Numbers"
+            description="Numerical patterns and logical thinking."
+            onClick={() => handleExerciseSelect("Missing Numbers")}
+            className="bg-gradient-to-br from-[#FF7E1D]/10 to-[#FF7E1D]/5"
+          />
         </div>
       </main>
     </div>
