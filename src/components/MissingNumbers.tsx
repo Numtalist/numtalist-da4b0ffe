@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import LevelDisplay from "./LevelDisplay";
+import { Card } from "@/components/ui/card";
 
 interface MissingNumbersProps {
   level: number;
@@ -12,8 +12,8 @@ interface MissingNumbersProps {
 
 const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
   const [sequence, setSequence] = useState<(number | null)[]>([]);
-  const [userAnswer, setUserAnswer] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState<number>(0);
+  const [choices, setChoices] = useState<number[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const { toast } = useToast();
@@ -26,8 +26,25 @@ const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
     setCorrectAnswer(sequence[missingIndex]);
     sequence[missingIndex] = null;
     setSequence(sequence);
-    setUserAnswer("");
     setIsCorrect(null);
+    
+    // Generate random choices including the correct answer
+    const wrongChoices = [
+      correctAnswer + Math.floor(Math.random() * 5) + 1,
+      correctAnswer - Math.floor(Math.random() * 5) - 1,
+      correctAnswer + Math.floor(Math.random() * 3) + 2
+    ];
+    const allChoices = [...wrongChoices, correctAnswer];
+    setChoices(shuffleArray(allChoices));
+  };
+
+  const shuffleArray = (array: number[]) => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
   };
 
   const startGame = () => {
@@ -41,9 +58,8 @@ const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
     }
   }, [level]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const answer = parseInt(userAnswer);
+  const handleAnswer = (answer: number) => {
+    if (isCorrect !== null) return;
     
     if (answer === correctAnswer) {
       setIsCorrect(true);
@@ -104,25 +120,23 @@ const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
           ))}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            type="number"
-            value={userAnswer}
-            onChange={(e) => setUserAnswer(e.target.value)}
-            placeholder="Enter the missing number"
-            className="text-center text-xl"
-            required
-            disabled={isCorrect !== null}
-          />
-          
-          <Button 
-            type="submit" 
-            className="w-full"
-            disabled={isCorrect !== null}
-          >
-            Check Answer
-          </Button>
-        </form>
+        <div className="grid grid-cols-2 gap-4">
+          {choices.map((choice, index) => (
+            <Card
+              key={index}
+              className={`p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                isCorrect !== null
+                  ? choice === correctAnswer
+                    ? "bg-green-100"
+                    : "bg-gray-100"
+                  : "hover:bg-orange-50"
+              }`}
+              onClick={() => handleAnswer(choice)}
+            >
+              <p className="text-2xl text-center font-bold">{choice}</p>
+            </Card>
+          ))}
+        </div>
       </div>
 
       {isCorrect === false && (
