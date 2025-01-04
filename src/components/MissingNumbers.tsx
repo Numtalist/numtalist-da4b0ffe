@@ -23,18 +23,21 @@ const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
     const start = Math.max(1, Math.floor(Math.random() * 10));
     const sequence = [start, start + step, start + 2 * step];
     const missingIndex = Math.floor(Math.random() * 3);
-    setCorrectAnswer(sequence[missingIndex]);
+    const answer = sequence[missingIndex];
+    setCorrectAnswer(answer);
     sequence[missingIndex] = null;
     setSequence(sequence);
     setIsCorrect(null);
     
-    // Generate random choices including the correct answer
-    const wrongChoices = [
-      correctAnswer + Math.floor(Math.random() * 5) + 1,
-      correctAnswer - Math.floor(Math.random() * 5) - 1,
-      correctAnswer + Math.floor(Math.random() * 3) + 2
-    ];
-    const allChoices = [...wrongChoices, correctAnswer];
+    // Generate choices including the correct answer
+    let wrongChoices = [];
+    while (wrongChoices.length < 3) {
+      const wrongChoice = answer + Math.floor(Math.random() * 7) - 3; // Random number between answer-3 and answer+3
+      if (wrongChoice !== answer && !wrongChoices.includes(wrongChoice)) {
+        wrongChoices.push(wrongChoice);
+      }
+    }
+    const allChoices = [...wrongChoices, answer];
     setChoices(shuffleArray(allChoices));
   };
 
