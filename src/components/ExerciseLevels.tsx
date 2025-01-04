@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import NumberRecognition from "./NumberRecognition";
 import SequenceFlashing from "./SequenceFlashing";
 import MathProblems from "./MathProblems";
+import MissingNumbers from "./MissingNumbers";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
 
@@ -31,6 +32,11 @@ const getExerciseDetails = (title: string) => {
     case "Math Problems":
       return {
         description: "Solve addition, subtraction, and multiplication problems",
+        levels: 8
+      };
+    case "Missing Numbers":
+      return {
+        description: "Find the missing number in sequences",
         levels: 8
       };
     default:
@@ -87,6 +93,9 @@ const ExerciseLevels = ({
         break;
       case "Math Problems":
         ExerciseComponent = MathProblems;
+        break;
+      case "Missing Numbers":
+        ExerciseComponent = MissingNumbers;
         break;
       default:
         ExerciseComponent = NumberRecognition;
