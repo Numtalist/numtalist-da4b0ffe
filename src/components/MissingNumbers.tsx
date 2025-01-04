@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import LevelDisplay from "./LevelDisplay";
 
@@ -13,6 +14,8 @@ const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
   const [sequence, setSequence] = useState<(number | null)[]>([]);
   const [userAnswer, setUserAnswer] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState<number>(0);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [gameStarted, setGameStarted] = useState(false);
   const { toast } = useToast();
 
   const generateSequence = () => {
@@ -24,10 +27,18 @@ const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
     sequence[missingIndex] = null;
     setSequence(sequence);
     setUserAnswer("");
+    setIsCorrect(null);
+  };
+
+  const startGame = () => {
+    setGameStarted(true);
+    generateSequence();
   };
 
   useEffect(() => {
-    generateSequence();
+    if (gameStarted) {
+      generateSequence();
+    }
   }, [level]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,33 +46,55 @@ const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
     const answer = parseInt(userAnswer);
     
     if (answer === correctAnswer) {
+      setIsCorrect(true);
       toast({
         title: "Correct! 🎉",
-        description: "Well done! Let's try another one.",
+        description: "Well done! Click 'Next Level' to continue.",
       });
-      setTimeout(() => {
-        if (level < 8) {
-          generateSequence();
-        } else {
-          onComplete();
-        }
-      }, 1500);
     } else {
+      setIsCorrect(false);
       toast({
-        title: "Not quite right",
-        description: "Try again!",
+        title: "Think again! 🤔",
+        description: "That's not the right answer. Try again!",
         variant: "destructive",
       });
     }
   };
 
+  const handleNextLevel = () => {
+    if (isCorrect) {
+      onComplete();
+    }
+  };
+
+  const handleTryAgain = () => {
+    generateSequence();
+  };
+
+  if (!gameStarted) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
+        <div className="text-center mb-4 relative">
+          <LevelDisplay level={level} />
+          <h2 className="text-2xl font-bold mb-2">Missing Numbers</h2>
+          <p className="text-gray-600">Find the missing number in the sequence.</p>
+        </div>
+        <Button onClick={startGame} size="lg">
+          Start Game
+        </Button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4">
-      <LevelDisplay level={level} />
-      
+    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
+      <div className="text-center mb-4 relative">
+        <LevelDisplay level={level} />
+        <h2 className="text-2xl font-bold mb-2">Missing Numbers</h2>
+        <p className="text-gray-600">What's the missing number?</p>
+      </div>
+
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Find the Missing Number</h2>
-        
         <div className="text-3xl text-center mb-8 font-mono">
           {sequence.map((num, index) => (
             <span key={index}>
@@ -79,16 +112,43 @@ const MissingNumbers = ({ level, onComplete }: MissingNumbersProps) => {
             placeholder="Enter the missing number"
             className="text-center text-xl"
             required
+            disabled={isCorrect !== null}
           />
           
           <Button 
             type="submit" 
             className="w-full"
+            disabled={isCorrect !== null}
           >
             Check Answer
           </Button>
         </form>
       </div>
+
+      {isCorrect === false && (
+        <Button 
+          onClick={handleTryAgain}
+          variant="secondary"
+          className="mt-4"
+        >
+          Try Again
+        </Button>
+      )}
+
+      {isCorrect && (
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Check className="text-green-500" />
+            <span>Correct!</span>
+          </div>
+          <Button 
+            onClick={handleNextLevel}
+            className="mt-4"
+          >
+            Next Level
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
