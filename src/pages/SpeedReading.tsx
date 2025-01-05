@@ -73,20 +73,6 @@ const SpeedReading = () => {
     const exercise = exercises.find((ex) => ex.id === selectedExercise);
     if (!exercise) return null;
 
-    if (exercise.id === 1) {
-      return (
-        <div>
-          <Navbar />
-          <div className="container mx-auto px-4 py-8">
-            <LetterRecognition
-              level={1}
-              onComplete={() => console.log("Level completed")}
-            />
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div>
         <Navbar />
