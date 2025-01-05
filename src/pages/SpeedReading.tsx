@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import ActivityCard from "@/components/ActivityCard";
 import ExerciseLevels from "@/components/ExerciseLevels";
-import LetterRecognition from "@/components/LetterRecognition";
 
 const exercises = [
   {
