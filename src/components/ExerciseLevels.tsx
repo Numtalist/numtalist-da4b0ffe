@@ -7,6 +7,7 @@ import NumberRecognition from "./NumberRecognition";
 import SequenceFlashing from "./SequenceFlashing";
 import MathProblems from "./MathProblems";
 import MissingNumbers from "./MissingNumbers";
+import LetterRecognition from "./LetterRecognition";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
 
@@ -19,9 +20,9 @@ interface ExerciseLevelsProps {
 
 const getExerciseDetails = (title: string) => {
   switch (title) {
-    case "Number Recognition":
+    case "Letter Recognition":
       return {
-        description: "Practice quick number recognition with timed exercises",
+        description: "Practice quick letter recognition with timed exercises",
         levels: 8
       };
     case "Sequence Flashing":
@@ -88,6 +89,9 @@ const ExerciseLevels = ({
   if (selectedLevel) {
     let ExerciseComponent;
     switch (title) {
+      case "Letter Recognition":
+        ExerciseComponent = LetterRecognition;
+        break;
       case "Sequence Flashing":
         ExerciseComponent = SequenceFlashing;
         break;
