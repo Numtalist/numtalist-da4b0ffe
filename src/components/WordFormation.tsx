@@ -101,7 +101,7 @@ const WordFormation = ({ level, onComplete }: WordFormationProps) => {
 
   if (!gameStarted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
+      <div className="flex flex-col items-center justify-center h-[80vh] gap-8">
         <div className="text-center mb-4">
           <LevelDisplay level={level} />
           <h2 className="text-2xl font-bold mb-2">Word Formation</h2>
@@ -115,7 +115,7 @@ const WordFormation = ({ level, onComplete }: WordFormationProps) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8 px-4">
+    <div className="flex flex-col items-center justify-center h-[80vh] gap-8 px-4">
       <div className="text-center mb-4">
         <LevelDisplay level={level} />
         <h2 className="text-2xl font-bold mb-2">Word Formation</h2>
