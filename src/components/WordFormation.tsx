@@ -77,7 +77,7 @@ const WordFormation = ({ level, onComplete }: WordFormationProps) => {
     if (gameStarted) {
       startNewRound();
     }
-  }, [level]);
+  }, [level, gameStarted]);
 
   const handleLetterSelect = (letter: string, index: number) => {
     const newSelectedLetters = [...selectedLetters, letter];
@@ -101,13 +101,17 @@ const WordFormation = ({ level, onComplete }: WordFormationProps) => {
 
   if (!gameStarted) {
     return (
-      <div className="flex flex-col items-center justify-center h-[80vh] gap-8">
-        <div className="text-center mb-4">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] p-4">
+        <div className="text-center mb-8">
           <LevelDisplay level={level} />
-          <h2 className="text-2xl font-bold mb-2">Word Formation</h2>
-          <p className="text-gray-600">Watch the letters and arrange them to form the word.</p>
+          <h2 className="text-2xl font-bold mb-4">Word Formation</h2>
+          <p className="text-gray-600 mb-8">Watch the letters and arrange them to form the word.</p>
         </div>
-        <Button onClick={() => setGameStarted(true)} size="lg">
+        <Button 
+          onClick={() => setGameStarted(true)}
+          size="lg"
+          className="bg-[#FF7E1D] hover:bg-[#FF6B00] text-white"
+        >
           Start Game
         </Button>
       </div>
@@ -115,11 +119,11 @@ const WordFormation = ({ level, onComplete }: WordFormationProps) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-[80vh] gap-8 px-4">
-      <div className="text-center mb-4">
+    <div className="flex flex-col items-center justify-center min-h-[60vh] p-4">
+      <div className="text-center mb-8">
         <LevelDisplay level={level} />
-        <h2 className="text-2xl font-bold mb-2">Word Formation</h2>
-        <p className="text-gray-600">Form the word</p>
+        <h2 className="text-2xl font-bold mb-4">Word Formation</h2>
+        <p className="text-gray-600 mb-4">Form the word</p>
       </div>
 
       <WordDisplayArea
@@ -130,7 +134,7 @@ const WordFormation = ({ level, onComplete }: WordFormationProps) => {
       />
 
       {!showingSequence && !isCorrect && (
-        <div className="flex flex-wrap justify-center gap-4 max-w-xs mx-auto">
+        <div className="flex flex-wrap justify-center gap-4 mt-8 mb-8">
           {shuffledLetters.map((letter, index) => (
             <LetterCard
               key={index}
@@ -145,18 +149,22 @@ const WordFormation = ({ level, onComplete }: WordFormationProps) => {
         <Button 
           onClick={startNewRound}
           variant="secondary"
+          className="mt-4"
         >
           Try Again
         </Button>
       )}
 
       {isCorrect && (
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Check className="text-green-500" />
-            <span>Correct!</span>
+        <div className="flex flex-col items-center gap-4 mt-4">
+          <div className="flex items-center gap-2 text-green-500">
+            <Check className="w-6 h-6" />
+            <span className="font-medium">Correct!</span>
           </div>
-          <Button onClick={onComplete}>
+          <Button 
+            onClick={onComplete}
+            className="bg-[#FF7E1D] hover:bg-[#FF6B00] text-white"
+          >
             Next Level
           </Button>
         </div>

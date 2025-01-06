@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-
 interface LetterCardProps {
   letter: string;
   onClick: () => void;
@@ -7,13 +5,12 @@ interface LetterCardProps {
 
 const LetterCard = ({ letter, onClick }: LetterCardProps) => {
   return (
-    <Button
+    <button
       onClick={onClick}
-      variant="outline"
-      className="w-12 h-12 text-2xl flex items-center justify-center"
+      className="w-12 h-12 bg-white border-2 border-[#FF7E1D] rounded-lg flex items-center justify-center text-xl font-bold text-[#FF7E1D] hover:bg-[#FF7E1D] hover:text-white transition-colors duration-200"
     >
       {letter}
-    </Button>
+    </button>
   );
 };
 
