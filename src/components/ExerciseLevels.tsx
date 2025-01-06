@@ -32,6 +32,11 @@ const getExerciseDetails = (title: string) => {
         description: "Arrange letters to form words",
         levels: 8
       };
+    case "Sight Words":
+      return {
+        description: "Rapidly recognize common sight words",
+        levels: 8
+      };
     case "Sequence Flashing":
       return {
         description: "Remember and recall sequences of numbers",
@@ -110,6 +115,9 @@ const ExerciseLevels = ({
         break;
       case "Missing Numbers":
         ExerciseComponent = MissingNumbers;
+        break;
+      case "Sight Words":
+        ExerciseComponent = SightWords;
         break;
       default:
         ExerciseComponent = NumberRecognition;
