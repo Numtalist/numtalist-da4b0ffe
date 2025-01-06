@@ -10,6 +10,7 @@ import MissingNumbers from "./MissingNumbers";
 import LetterRecognition from "./LetterRecognition";
 import WordFormation from "./WordFormation";
 import SightWords from "./SightWords";
+import SentenceFlashing from "./SentenceFlashing";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
 
@@ -35,6 +36,11 @@ const getExerciseDetails = (title: string) => {
     case "Sight Words":
       return {
         description: "Rapidly recognize common sight words",
+        levels: 8
+      };
+    case "Sentence Flashing":
+      return {
+        description: "Read and comprehend rapidly displayed sentences",
         levels: 8
       };
     case "Sequence Flashing":
@@ -118,6 +124,9 @@ const ExerciseLevels = ({
         break;
       case "Sight Words":
         ExerciseComponent = SightWords;
+        break;
+      case "Sentence Flashing":
+        ExerciseComponent = SentenceFlashing;
         break;
       default:
         ExerciseComponent = NumberRecognition;
