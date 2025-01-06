@@ -9,6 +9,7 @@ import MathProblems from "./MathProblems";
 import MissingNumbers from "./MissingNumbers";
 import LetterRecognition from "./LetterRecognition";
 import WordFormation from "./WordFormation";
+import SightWords from "./SightWords";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
 
