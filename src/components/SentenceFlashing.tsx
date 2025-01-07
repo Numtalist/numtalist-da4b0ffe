@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check, X, ArrowRight } from "lucide-react";
+import { Check, X, ArrowRight, RotateCcw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import LevelDisplay from "./LevelDisplay";
 
@@ -96,6 +96,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
       toast({
         title: "Try again",
         description: "That wasn't the correct answer.",
+        variant: "destructive",
       });
     }
   };
@@ -109,6 +110,11 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
       setSelectedAnswer(null);
       setShowNextButton(false);
     }
+  };
+
+  const handleTryAgain = () => {
+    setSelectedAnswer(null);
+    startSequence();
   };
 
   if (!gameStarted) {
@@ -159,12 +165,23 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
                   onClick={() => handleAnswerSelect(index)}
                   variant={selectedAnswer === index ? "default" : "outline"}
                   className="w-full py-6 text-lg"
-                  disabled={selectedAnswer !== null}
+                  disabled={selectedAnswer !== null && selectedAnswer !== index}
                 >
                   {option}
                 </Button>
               ))}
             </div>
+            {selectedAnswer !== null && selectedAnswer !== currentExercise.answer && (
+              <Button 
+                onClick={handleTryAgain}
+                variant="outline"
+                className="w-full mt-4"
+                size="lg"
+              >
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Try Again
+              </Button>
+            )}
           </div>
         )}
 
