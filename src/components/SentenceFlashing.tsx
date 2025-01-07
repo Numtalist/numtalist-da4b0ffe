@@ -52,12 +52,13 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
   const [showQuestion, setShowQuestion] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
-  const [isLevelComplete, setIsLevelComplete] = useState(false);
+  const [showNextButton, setShowNextButton] = useState(false);
   const { toast } = useToast();
 
   const levelSentences = sentences[level as keyof typeof sentences] || sentences[1];
   const currentExercise = levelSentences[currentSentence];
   const words = currentExercise.text.split(" ");
+  const isLastSentence = currentSentence === levelSentences.length - 1;
 
   const displayTime = Math.max(400 - (level - 1) * 50, 200);
 
@@ -66,7 +67,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
     setCurrentWord(0);
     setShowQuestion(false);
     setSelectedAnswer(null);
-    setIsLevelComplete(false);
+    setShowNextButton(false);
 
     let wordIndex = 0;
     const interval = setInterval(() => {
@@ -90,16 +91,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
         title: "Correct! 🎉",
         description: "Well done! You understood the sentence.",
       });
-
-      if (currentSentence < levelSentences.length - 1) {
-        setTimeout(() => {
-          setCurrentSentence(prev => prev + 1);
-          setShowQuestion(false);
-          setSelectedAnswer(null);
-        }, 1500);
-      } else {
-        setIsLevelComplete(true);
-      }
+      setShowNextButton(true);
     } else {
       toast({
         title: "Try again",
@@ -108,8 +100,15 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
     }
   };
 
-  const handleNextLevel = () => {
-    onComplete();
+  const handleNext = () => {
+    if (isLastSentence) {
+      onComplete();
+    } else {
+      setCurrentSentence(prev => prev + 1);
+      setShowQuestion(false);
+      setSelectedAnswer(null);
+      setShowNextButton(false);
+    }
   };
 
   if (!gameStarted) {
@@ -136,7 +135,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
       </div>
 
       <Card className="w-full max-w-2xl p-8 flex flex-col items-center gap-6">
-        {!showingWords && !showQuestion && !isLevelComplete && (
+        {!showingWords && !showQuestion && !showNextButton && (
           <Button onClick={startSequence} size="lg">
             Show Sentence
           </Button>
@@ -148,7 +147,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
           </div>
         )}
 
-        {showQuestion && !isLevelComplete && (
+        {showQuestion && !showNextButton && (
           <div className="w-full space-y-6">
             <h3 className="text-xl font-semibold text-center mb-4">
               {currentExercise.question}
@@ -169,15 +168,14 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
           </div>
         )}
 
-        {isLevelComplete && (
+        {showNextButton && (
           <div className="text-center space-y-4">
-            <h3 className="text-2xl font-bold text-green-600">Level Complete! 🎉</h3>
             <Button 
-              onClick={handleNextLevel}
+              onClick={handleNext}
               size="lg"
               className="gap-2"
             >
-              Next Level
+              {isLastSentence ? "Complete Level" : "Next Sentence"}
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
