@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Check, X, ArrowRight, RotateCcw } from "lucide-react";
+import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Card } from "@/components/ui/card";
 import LevelDisplay from "./LevelDisplay";
 
 interface SentenceFlashingProps {
@@ -46,69 +46,56 @@ const sentences = {
 };
 
 const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
-  const [currentSentence, setCurrentSentence] = useState(0);
-  const [showingWords, setShowingWords] = useState(false);
-  const [currentWord, setCurrentWord] = useState(0);
-  const [showQuestion, setShowQuestion] = useState(false);
+  const [currentSentence, setCurrentSentence] = useState<number>(0);
+  const [showingSentence, setShowingSentence] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
-  const [showNextButton, setShowNextButton] = useState(false);
   const { toast } = useToast();
 
   const levelSentences = sentences[level as keyof typeof sentences] || sentences[1];
   const currentExercise = levelSentences[currentSentence];
-  const words = currentExercise.text.split(" ");
-  const isLastSentence = currentSentence === levelSentences.length - 1;
-
-  const displayTime = Math.max(400 - (level - 1) * 50, 200);
+  const displayTime = Math.max(1000 - (level - 1) * 100, 300);
 
   const startSequence = () => {
-    setShowingWords(true);
-    setCurrentWord(0);
-    setShowQuestion(false);
+    setShowingSentence(true);
     setSelectedAnswer(null);
-    setShowNextButton(false);
+    setIsCorrect(null);
 
-    let wordIndex = 0;
-    const interval = setInterval(() => {
-      if (wordIndex < words.length - 1) {
-        wordIndex++;
-        setCurrentWord(wordIndex);
-      } else {
-        clearInterval(interval);
-        setShowingWords(false);
-        setShowQuestion(true);
-      }
+    setTimeout(() => {
+      setShowingSentence(false);
     }, displayTime);
   };
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
-    const isCorrect = answerIndex === currentExercise.answer;
+    const correct = answerIndex === currentExercise.answer;
+    setIsCorrect(correct);
 
-    if (isCorrect) {
+    if (correct) {
       toast({
         title: "Correct! 🎉",
-        description: "Well done! You understood the sentence.",
+        description: "Well done! Click 'Next Level' to continue.",
       });
-      setShowNextButton(true);
     } else {
       toast({
-        title: "Try again",
-        description: "That wasn't the correct answer.",
+        title: "Think again! 🤔",
+        description: "That's not the right answer. Try again!",
         variant: "destructive",
       });
     }
   };
 
-  const handleNext = () => {
-    if (isLastSentence) {
-      onComplete();
-    } else {
-      setCurrentSentence(prev => prev + 1);
-      setShowQuestion(false);
-      setSelectedAnswer(null);
-      setShowNextButton(false);
+  const handleNextLevel = () => {
+    if (isCorrect) {
+      if (currentSentence < levelSentences.length - 1) {
+        setCurrentSentence(prev => prev + 1);
+        setSelectedAnswer(null);
+        setIsCorrect(null);
+        startSequence();
+      } else {
+        onComplete();
+      }
     }
   };
 
@@ -120,84 +107,90 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
   if (!gameStarted) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 relative">
           <LevelDisplay level={level} />
-          <h2 className="text-2xl font-bold mb-2">Sentence Flashing</h2>
-          <p className="text-gray-600">Read the sentence carefully and answer the question.</p>
+          <h2 className="text-2xl font-bold mb-2">Sentence Reading</h2>
+          <p className="text-gray-600">Read and comprehend the sentence, then answer the question.</p>
         </div>
-        <Button onClick={() => setGameStarted(true)} size="lg">
-          Start Exercise
+        <Button onClick={() => {
+          setGameStarted(true);
+          startSequence();
+        }} size="lg">
+          Start Game
         </Button>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8 p-4">
-      <div className="text-center mb-4">
+    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
+      <div className="text-center mb-4 relative">
         <LevelDisplay level={level} />
-        <h2 className="text-2xl font-bold mb-2">Sentence Flashing</h2>
-        <p className="text-gray-600">Level {level}</p>
+        <h2 className="text-2xl font-bold mb-2">Sentence Reading</h2>
+        <p className="text-gray-600">Remember the sentence</p>
       </div>
 
-      <Card className="w-full max-w-2xl p-8 flex flex-col items-center gap-6">
-        {!showingWords && !showQuestion && !showNextButton && (
-          <Button onClick={startSequence} size="lg">
-            Show Sentence
-          </Button>
-        )}
-
-        {showingWords && (
-          <div className="text-4xl font-bold min-h-[60px] flex items-center justify-center">
-            {words[currentWord]}
-          </div>
-        )}
-
-        {showQuestion && !showNextButton && (
-          <div className="w-full space-y-6">
-            <h3 className="text-xl font-semibold text-center mb-4">
-              {currentExercise.question}
-            </h3>
-            <div className="grid gap-4">
-              {currentExercise.options.map((option, index) => (
-                <Button
-                  key={index}
-                  onClick={() => handleAnswerSelect(index)}
-                  variant={selectedAnswer === index ? "default" : "outline"}
-                  className="w-full py-6 text-lg"
-                  disabled={selectedAnswer !== null && selectedAnswer !== index}
-                >
-                  {option}
-                </Button>
-              ))}
-            </div>
-            {selectedAnswer !== null && selectedAnswer !== currentExercise.answer && (
-              <Button 
-                onClick={handleTryAgain}
-                variant="outline"
-                className="w-full mt-4"
-                size="lg"
-              >
-                <RotateCcw className="mr-2 h-4 w-4" />
-                Try Again
-              </Button>
-            )}
-          </div>
-        )}
-
-        {showNextButton && (
-          <div className="text-center space-y-4">
-            <Button 
-              onClick={handleNext}
-              size="lg"
-              className="gap-2"
-            >
-              {isLastSentence ? "Complete Level" : "Next Sentence"}
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
+      <Card className={`w-full max-w-2xl p-8 flex items-center justify-center transition-colors duration-300 ${
+        showingSentence ? 'bg-[#F1F1F1]' : 'bg-[#FF7E1D]'
+      }`}>
+        <span className={`text-2xl font-bold text-center ${showingSentence ? '' : 'opacity-0'}`}>
+          {currentExercise.text}
+        </span>
       </Card>
+
+      {!showingSentence && (
+        <div className="w-full max-w-2xl space-y-6">
+          <h3 className="text-xl font-semibold text-center mb-4">
+            {currentExercise.question}
+          </h3>
+          <div className="grid gap-4">
+            {currentExercise.options.map((option, index) => (
+              <Button
+                key={index}
+                onClick={() => handleAnswerSelect(index)}
+                variant={
+                  selectedAnswer === index
+                    ? isCorrect
+                      ? "default"
+                      : "destructive"
+                    : "outline"
+                }
+                className={`w-full py-6 text-lg ${
+                  selectedAnswer === index && isCorrect && "bg-green-500"
+                }`}
+                disabled={selectedAnswer !== null && selectedAnswer !== index}
+              >
+                {option}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {isCorrect === false && (
+        <Button 
+          onClick={handleTryAgain}
+          variant="secondary"
+          className="mt-4"
+        >
+          Try Again
+        </Button>
+      )}
+
+      {isCorrect && (
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Check className="text-green-500" />
+            <span>Correct!</span>
+          </div>
+          <Button 
+            onClick={handleNextLevel}
+            className="mt-4"
+          >
+            {currentSentence === levelSentences.length - 1 ? "Complete Level" : "Next Sentence"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
