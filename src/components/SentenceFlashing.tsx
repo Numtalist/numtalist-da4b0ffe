@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check, X } from "lucide-react";
+import { Check, X, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import LevelDisplay from "./LevelDisplay";
 
@@ -52,6 +52,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
   const [showQuestion, setShowQuestion] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
+  const [isLevelComplete, setIsLevelComplete] = useState(false);
   const { toast } = useToast();
 
   const levelSentences = sentences[level as keyof typeof sentences] || sentences[1];
@@ -65,6 +66,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
     setCurrentWord(0);
     setShowQuestion(false);
     setSelectedAnswer(null);
+    setIsLevelComplete(false);
 
     let wordIndex = 0;
     const interval = setInterval(() => {
@@ -96,7 +98,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
           setSelectedAnswer(null);
         }, 1500);
       } else {
-        onComplete();
+        setIsLevelComplete(true);
       }
     } else {
       toast({
@@ -104,6 +106,10 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
         description: "That wasn't the correct answer.",
       });
     }
+  };
+
+  const handleNextLevel = () => {
+    onComplete();
   };
 
   if (!gameStarted) {
@@ -130,7 +136,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
       </div>
 
       <Card className="w-full max-w-2xl p-8 flex flex-col items-center gap-6">
-        {!showingWords && !showQuestion && (
+        {!showingWords && !showQuestion && !isLevelComplete && (
           <Button onClick={startSequence} size="lg">
             Show Sentence
           </Button>
@@ -142,7 +148,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
           </div>
         )}
 
-        {showQuestion && (
+        {showQuestion && !isLevelComplete && (
           <div className="w-full space-y-6">
             <h3 className="text-xl font-semibold text-center mb-4">
               {currentExercise.question}
@@ -160,6 +166,20 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
                 </Button>
               ))}
             </div>
+          </div>
+        )}
+
+        {isLevelComplete && (
+          <div className="text-center space-y-4">
+            <h3 className="text-2xl font-bold text-green-600">Level Complete! 🎉</h3>
+            <Button 
+              onClick={handleNextLevel}
+              size="lg"
+              className="gap-2"
+            >
+              Next Level
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
         )}
       </Card>
