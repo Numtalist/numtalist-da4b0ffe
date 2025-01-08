@@ -11,6 +11,7 @@ import LetterRecognition from "./LetterRecognition";
 import WordFormation from "./WordFormation";
 import SightWords from "./SightWords";
 import SentenceFlashing from "./SentenceFlashing";
+import MemoryMatch from "./MemoryMatch";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
 
@@ -56,6 +57,11 @@ const getExerciseDetails = (title: string) => {
     case "Missing Numbers":
       return {
         description: "Find the missing number in sequences",
+        levels: 8
+      };
+    case "Memory Match":
+      return {
+        description: "Test your memory by matching words",
         levels: 8
       };
     default:
@@ -107,6 +113,9 @@ const ExerciseLevels = ({
   if (selectedLevel) {
     let ExerciseComponent;
     switch (title) {
+      case "Memory Match":
+        ExerciseComponent = MemoryMatch;
+        break;
       case "Letter Recognition":
         ExerciseComponent = LetterRecognition;
         break;

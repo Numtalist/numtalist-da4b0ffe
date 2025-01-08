@@ -32,8 +32,8 @@ const exercises = [
   {
     id: 5,
     title: "Memory Match Game",
-    description: "Match previously shown words from memory",
-    level: 3,
+    description: "Test your memory by matching words",
+    level: 1,
   },
   {
     id: 6,
@@ -58,6 +58,12 @@ const exercises = [
     title: "Visual Puzzles",
     description: "Complete words with missing letters",
     level: 5,
+  },
+  {
+    id: 10,
+    title: "Memory Match",
+    description: "Test your memory by matching words",
+    level: 1,
   },
 ];
 
