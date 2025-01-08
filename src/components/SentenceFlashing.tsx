@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -55,7 +55,7 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
 
   const levelSentences = sentences[level as keyof typeof sentences] || sentences[1];
   const currentExercise = levelSentences[currentSentence];
-  const displayTime = Math.max(1000 - (level - 1) * 100, 300);
+  const displayTime = Math.max(1000 - (level - 1) * 100, 200);
 
   const startSequence = () => {
     setShowingSentence(true);
@@ -103,6 +103,12 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
     setSelectedAnswer(null);
     startSequence();
   };
+
+  useEffect(() => {
+    if (gameStarted) {
+      startSequence();
+    }
+  }, [level]);
 
   if (!gameStarted) {
     return (
