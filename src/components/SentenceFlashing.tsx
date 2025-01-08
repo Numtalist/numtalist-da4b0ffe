@@ -18,7 +18,11 @@ const SentenceFlashing = ({ level, onComplete }: SentenceFlashingProps) => {
 
   const levelSentences = sentences[level as keyof typeof sentences] || sentences[1];
   const currentExercise = levelSentences[currentSentence];
-  const displayTime = Math.max(1000 - (level - 1) * 100, 200);
+  
+  // Updated display time calculation:
+  // Starts at 2000ms (2 seconds) for level 1
+  // Gradually decreases to 1000ms (1 second) or less for higher levels
+  const displayTime = Math.max(2000 - (level - 1) * 150, 800);
 
   const startSequence = () => {
     setShowingSentence(true);
