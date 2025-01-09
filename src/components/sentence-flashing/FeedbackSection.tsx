@@ -30,7 +30,7 @@ const FeedbackSection = ({ isCorrect, onTryAgain, onNextLevel, isLastSentence }:
           onClick={onNextLevel}
           className="mt-4"
         >
-          {isLastSentence ? "Complete Level" : "Next Sentence"}
+          {isLastSentence ? "Complete Level" : "Next Word"}
         </Button>
       </div>
     )}
