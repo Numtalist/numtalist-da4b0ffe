@@ -113,9 +113,6 @@ const ExerciseLevels = ({
   if (selectedLevel) {
     let ExerciseComponent;
     switch (title) {
-      case "Memory Match":
-        ExerciseComponent = MemoryMatch;
-        break;
       case "Letter Recognition":
         ExerciseComponent = LetterRecognition;
         break;
@@ -136,6 +133,9 @@ const ExerciseLevels = ({
         break;
       case "Sentence Flashing":
         ExerciseComponent = SentenceFlashing;
+        break;
+      case "Memory Match":
+        ExerciseComponent = MemoryMatch;
         break;
       default:
         ExerciseComponent = NumberRecognition;
