@@ -1,19 +1,11 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Lock, CheckCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import NumberRecognition from "./NumberRecognition";
-import SequenceFlashing from "./SequenceFlashing";
-import MathProblems from "./MathProblems";
-import MissingNumbers from "./MissingNumbers";
-import LetterRecognition from "./LetterRecognition";
-import WordFormation from "./WordFormation";
-import SightWords from "./SightWords";
-import SentenceFlashing from "./SentenceFlashing";
-import MemoryMatch from "./MemoryMatch";
 import Confetti from "react-confetti";
 import { useToast } from "@/hooks/use-toast";
+import ExerciseHeader from "./exercise-levels/ExerciseHeader";
+import LevelCard from "./exercise-levels/LevelCard";
+import ExerciseComponent from "./exercise-levels/ExerciseComponent";
 
 interface ExerciseLevelsProps {
   title: string;
@@ -21,56 +13,6 @@ interface ExerciseLevelsProps {
   levels?: number;
   currentLevel?: number;
 }
-
-const getExerciseDetails = (title: string) => {
-  switch (title) {
-    case "Letter Recognition":
-      return {
-        description: "Practice quick letter recognition with timed exercises",
-        levels: 8
-      };
-    case "Word Formation":
-      return {
-        description: "Arrange letters to form words",
-        levels: 8
-      };
-    case "Sight Words":
-      return {
-        description: "Rapidly recognize common sight words",
-        levels: 8
-      };
-    case "Sentence Flashing":
-      return {
-        description: "Read and comprehend rapidly displayed sentences",
-        levels: 8
-      };
-    case "Sequence Flashing":
-      return {
-        description: "Remember and recall sequences of numbers",
-        levels: 8
-      };
-    case "Math Problems":
-      return {
-        description: "Solve addition, subtraction, and multiplication problems",
-        levels: 8
-      };
-    case "Missing Numbers":
-      return {
-        description: "Find the missing number in sequences",
-        levels: 8
-      };
-    case "Memory Match":
-      return {
-        description: "Test your memory by matching words",
-        levels: 8
-      };
-    default:
-      return {
-        description: "",
-        levels: 8
-      };
-  }
-};
 
 const ExerciseLevels = ({ 
   title, 
@@ -111,43 +53,12 @@ const ExerciseLevels = ({
   };
 
   if (selectedLevel) {
-    let ExerciseComponent;
-    switch (title) {
-      case "Letter Recognition":
-        ExerciseComponent = LetterRecognition;
-        break;
-      case "Word Formation":
-        ExerciseComponent = WordFormation;
-        break;
-      case "Sequence Flashing":
-        ExerciseComponent = SequenceFlashing;
-        break;
-      case "Math Problems":
-        ExerciseComponent = MathProblems;
-        break;
-      case "Missing Numbers":
-        ExerciseComponent = MissingNumbers;
-        break;
-      case "Sight Words":
-        ExerciseComponent = SightWords;
-        break;
-      case "Sentence Flashing":
-        ExerciseComponent = SentenceFlashing;
-        break;
-      case "Memory Match":
-        ExerciseComponent = MemoryMatch;
-        break;
-      default:
-        ExerciseComponent = NumberRecognition;
-    }
-
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <ExerciseComponent 
-          level={selectedLevel} 
-          onComplete={handleLevelComplete}
-        />
-      </div>
+      <ExerciseComponent
+        title={title}
+        level={selectedLevel}
+        onComplete={handleLevelComplete}
+      />
     );
   }
 
@@ -162,10 +73,7 @@ const ExerciseLevels = ({
         />
       )}
       <main className="pt-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
-          <p className="text-gray-600">{description}</p>
-        </div>
+        <ExerciseHeader title={title} description={description} />
 
         <Card className="p-6 max-w-4xl mx-auto">
           <h2 className="text-xl font-semibold mb-4">Progress</h2>
@@ -173,40 +81,20 @@ const ExerciseLevels = ({
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {[...Array(levels)].map((_, i) => {
-              const isCompleted = completedLevels.includes(i + 1);
-              const isUnlocked = i + 1 <= unlockedLevel;
-              const isCurrentLevel = i + 1 === unlockedLevel;
+              const level = i + 1;
+              const isCompleted = completedLevels.includes(level);
+              const isUnlocked = level <= unlockedLevel;
+              const isCurrentLevel = level === unlockedLevel;
               
               return (
-                <Card
+                <LevelCard
                   key={i}
-                  className={`p-4 flex flex-col items-center justify-center aspect-square cursor-pointer transition-all duration-300 hover:shadow-lg relative ${
-                    isCompleted ? "bg-[#F1F1F1] text-gray-900" : 
-                    isCurrentLevel ? "bg-[#FF7E1D] text-white" : 
-                    isUnlocked ? "bg-[#FF7E1D] text-white" : 
-                    "bg-gray-400 text-gray-100"
-                  }`}
-                  onClick={() => isUnlocked && setSelectedLevel(i + 1)}
-                >
-                  {isCompleted && (
-                    <Badge 
-                      variant="secondary" 
-                      className="absolute top-2 right-2"
-                    >
-                      <CheckCircle className="w-4 h-4" />
-                    </Badge>
-                  )}
-                  <div className="text-2xl font-bold mb-2">
-                    {isUnlocked ? (
-                      i + 1
-                    ) : (
-                      <Lock className="w-6 h-6" />
-                    )}
-                  </div>
-                  <p className={`text-sm ${isUnlocked ? "text-white" : "text-gray-100"}`}>
-                    Level {i + 1}
-                  </p>
-                </Card>
+                  level={level}
+                  isCompleted={isCompleted}
+                  isUnlocked={isUnlocked}
+                  isCurrentLevel={isCurrentLevel}
+                  onClick={() => setSelectedLevel(level)}
+                />
               );
             })}
           </div>
