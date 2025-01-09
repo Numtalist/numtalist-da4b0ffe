@@ -31,7 +31,7 @@ const exercises = [
   },
   {
     id: 5,
-    title: "Memory Match Game",
+    title: "Memory Match",
     description: "Test your memory by matching words",
     level: 1,
   },
