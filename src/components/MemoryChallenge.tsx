@@ -62,23 +62,23 @@ const MemoryChallenge = ({ level, onComplete }: MemoryChallengeProps) => {
     const newUserInput = [...userInput, number];
     setUserInput(newUserInput);
 
+    // Check if this selection completes the sequence
     if (newUserInput.length === numbers.length) {
-      const correctNumbers = new Set(numbers);
-      const userCorrect = newUserInput.filter(n => correctNumbers.has(n));
-      const percentageCorrect = (userCorrect.length / numbers.length) * 100;
-      const isSuccess = percentageCorrect >= 70;
+      // Compare sequences directly to ensure exact order match
+      const correct = newUserInput.every(
+        (num, index) => num === numbers[index]
+      );
+      setIsCorrect(correct);
 
-      setIsCorrect(isSuccess);
-
-      if (isSuccess) {
+      if (correct) {
         toast({
           title: "Well done! 🎉",
-          description: `You remembered ${userCorrect.length} out of ${numbers.length} numbers!`,
+          description: `You remembered all numbers in the correct order!`,
         });
       } else {
         toast({
           title: "Try again! 🤔",
-          description: `The numbers were: ${numbers.join(", ")}`,
+          description: `The correct sequence was: ${numbers.join(", ")}`,
           variant: "destructive",
         });
       }
