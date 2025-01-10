@@ -73,9 +73,15 @@ const MentalArithmetic = () => {
           />
           <ActivityCard
             title="Missing Numbers"
-            description="Numerical patterns and logical thinking."
+            description="Find the missing number in numerical patterns"
             onClick={() => handleExerciseSelect("Missing Numbers")}
             className="bg-gradient-to-br from-primary/10 to-primary/5"
+          />
+          <ActivityCard
+            title="Number Comparison"
+            description="Compare numbers and choose the larger or smaller one"
+            onClick={() => handleExerciseSelect("Number Comparison")}
+            className="bg-gradient-to-br from-secondary/10 to-secondary/5"
           />
         </div>
       </main>
@@ -91,6 +97,10 @@ const getExerciseDescription = (exercise: string): string => {
       return "Remember and recall sequences of numbers";
     case "Math Problems":
       return "Solve addition, subtraction, and multiplication problems";
+    case "Missing Numbers":
+      return "Find the missing number in numerical patterns";
+    case "Number Comparison":
+      return "Compare numbers and choose the larger or smaller one";
     default:
       return "";
   }
