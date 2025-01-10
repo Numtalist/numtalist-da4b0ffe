@@ -13,14 +13,15 @@ interface MemoryChallengeProps {
 const MemoryChallenge = ({ level, onComplete }: MemoryChallengeProps) => {
   const [numbers, setNumbers] = useState<number[]>([]);
   const [showingNumbers, setShowingNumbers] = useState(false);
-  const [userInput, setUserInput] = useState<string>("");
+  const [userInput, setUserInput] = useState<number[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
+  const [randomizedButtons, setRandomizedButtons] = useState<number[]>([]);
   const { toast } = useToast();
 
   const generateNumbers = () => {
-    const count = Math.min(3 + Math.floor(level / 2), 8); // Increase numbers with level
-    const maxNumber = Math.min(10 + level * 5, 99); // Increase max number with level
+    const count = Math.min(3 + Math.floor(level / 2), 8);
+    const maxNumber = Math.min(10 + level * 5, 99);
     const newNumbers = [];
     for (let i = 0; i < count; i++) {
       newNumbers.push(Math.floor(Math.random() * maxNumber) + 1);
@@ -28,14 +29,23 @@ const MemoryChallenge = ({ level, onComplete }: MemoryChallengeProps) => {
     return newNumbers;
   };
 
+  const shuffleArray = (array: number[]) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   const startNewRound = () => {
     const newNumbers = generateNumbers();
     setNumbers(newNumbers);
+    setRandomizedButtons(shuffleArray([...newNumbers]));
     setShowingNumbers(true);
-    setUserInput("");
+    setUserInput([]);
     setIsCorrect(null);
 
-    // Hide numbers after 2 seconds
     setTimeout(() => {
       setShowingNumbers(false);
     }, 2000);
@@ -46,28 +56,32 @@ const MemoryChallenge = ({ level, onComplete }: MemoryChallengeProps) => {
     startNewRound();
   };
 
-  const handleSubmit = () => {
-    const userNumbers = userInput.split(",").map(n => parseInt(n.trim())).filter(n => !isNaN(n));
-    const correctNumbers = new Set(numbers);
-    const userCorrect = userNumbers.filter(n => correctNumbers.has(n));
+  const handleNumberSelect = (number: number) => {
+    if (userInput.length >= numbers.length) return;
     
-    // Calculate percentage of correct answers
-    const percentageCorrect = (userCorrect.length / numbers.length) * 100;
-    const isSuccess = percentageCorrect >= 70; // Need 70% correct to pass
+    const newUserInput = [...userInput, number];
+    setUserInput(newUserInput);
 
-    setIsCorrect(isSuccess);
+    if (newUserInput.length === numbers.length) {
+      const correctNumbers = new Set(numbers);
+      const userCorrect = newUserInput.filter(n => correctNumbers.has(n));
+      const percentageCorrect = (userCorrect.length / numbers.length) * 100;
+      const isSuccess = percentageCorrect >= 70;
 
-    if (isSuccess) {
-      toast({
-        title: "Well done! 🎉",
-        description: `You remembered ${userCorrect.length} out of ${numbers.length} numbers!`,
-      });
-    } else {
-      toast({
-        title: "Try again! 🤔",
-        description: `The numbers were: ${numbers.join(", ")}`,
-        variant: "destructive",
-      });
+      setIsCorrect(isSuccess);
+
+      if (isSuccess) {
+        toast({
+          title: "Well done! 🎉",
+          description: `You remembered ${userCorrect.length} out of ${numbers.length} numbers!`,
+        });
+      } else {
+        toast({
+          title: "Try again! 🤔",
+          description: `The numbers were: ${numbers.join(", ")}`,
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -110,11 +124,11 @@ const MemoryChallenge = ({ level, onComplete }: MemoryChallengeProps) => {
 
       <Card className="w-full max-w-md p-8">
         {showingNumbers ? (
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-4 gap-4 place-items-center">
             {numbers.map((num, index) => (
               <div
                 key={index}
-                className="bg-orange-100 p-4 rounded-lg text-center text-2xl font-bold"
+                className="bg-orange-100 p-4 rounded-lg text-center text-2xl font-bold w-16 h-16 flex items-center justify-center"
               >
                 {num}
               </div>
@@ -122,19 +136,22 @@ const MemoryChallenge = ({ level, onComplete }: MemoryChallengeProps) => {
           </div>
         ) : (
           <div className="space-y-4">
-            <input
-              type="text"
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              placeholder="Enter numbers separated by commas"
-              className="w-full p-2 border rounded"
-              disabled={isCorrect !== null}
-            />
-            {isCorrect === null && (
-              <Button onClick={handleSubmit} className="w-full">
-                Check Answer
-              </Button>
-            )}
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              {randomizedButtons.map((num, index) => (
+                <Button
+                  key={index}
+                  onClick={() => handleNumberSelect(num)}
+                  variant={userInput.includes(num) ? "default" : "outline"}
+                  className="h-16 text-2xl"
+                  disabled={userInput.length === numbers.length || isCorrect !== null}
+                >
+                  {num}
+                </Button>
+              ))}
+            </div>
+            <div className="text-center text-gray-600">
+              Selected: {userInput.join(" → ")}
+            </div>
           </div>
         )}
       </Card>
