@@ -78,10 +78,16 @@ const MentalArithmetic = () => {
             className="bg-gradient-to-br from-primary/10 to-primary/5"
           />
           <ActivityCard
+            title="Memory Challenge"
+            description="Remember and recall a set of numbers shown briefly"
+            onClick={() => handleExerciseSelect("Memory Challenge")}
+            className="bg-gradient-to-br from-secondary/10 to-secondary/5"
+          />
+          <ActivityCard
             title="Number Comparison"
             description="Compare numbers and choose the larger or smaller one"
             onClick={() => handleExerciseSelect("Number Comparison")}
-            className="bg-gradient-to-br from-secondary/10 to-secondary/5"
+            className="bg-gradient-to-br from-[#FF7E1D]/10 to-[#FF7E1D]/5"
           />
         </div>
       </main>
@@ -99,6 +105,8 @@ const getExerciseDescription = (exercise: string): string => {
       return "Solve addition, subtraction, and multiplication problems";
     case "Missing Numbers":
       return "Find the missing number in numerical patterns";
+    case "Memory Challenge":
+      return "Remember and recall a set of numbers shown briefly";
     case "Number Comparison":
       return "Compare numbers and choose the larger or smaller one";
     default:

@@ -2,11 +2,7 @@ import NumberRecognition from "../NumberRecognition";
 import SequenceFlashing from "../SequenceFlashing";
 import MathProblems from "../MathProblems";
 import MissingNumbers from "../MissingNumbers";
-import LetterRecognition from "../LetterRecognition";
-import WordFormation from "../WordFormation";
-import SightWords from "../SightWords";
-import SentenceFlashing from "../SentenceFlashing";
-import MemoryMatch from "../MemoryMatch";
+import MemoryChallenge from "../MemoryChallenge";
 import NumberComparison from "../NumberComparison";
 
 interface ExerciseComponentProps {
@@ -19,11 +15,8 @@ const ExerciseComponent = ({ title, level, onComplete }: ExerciseComponentProps)
   let Component;
   
   switch (title) {
-    case "Letter Recognition":
-      Component = LetterRecognition;
-      break;
-    case "Word Formation":
-      Component = WordFormation;
+    case "Number Recognition":
+      Component = NumberRecognition;
       break;
     case "Sequence Flashing":
       Component = SequenceFlashing;
@@ -34,17 +27,8 @@ const ExerciseComponent = ({ title, level, onComplete }: ExerciseComponentProps)
     case "Missing Numbers":
       Component = MissingNumbers;
       break;
-    case "Sight Words":
-      Component = SightWords;
-      break;
-    case "Sentence Flashing":
-      Component = SentenceFlashing;
-      break;
-    case "Memory Match":
-      Component = MemoryMatch;
-      break;
-    case "Number Recognition":
-      Component = NumberRecognition;
+    case "Memory Challenge":
+      Component = MemoryChallenge;
       break;
     case "Number Comparison":
       Component = NumberComparison;
