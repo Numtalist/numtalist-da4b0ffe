@@ -89,6 +89,12 @@ const MentalArithmetic = () => {
             onClick={() => handleExerciseSelect("Number Comparison")}
             className="bg-gradient-to-br from-[#FF7E1D]/10 to-[#FF7E1D]/5"
           />
+          <ActivityCard
+            title="Timed Calculations"
+            description="Solve math problems that appear briefly on screen"
+            onClick={() => handleExerciseSelect("Timed Calculations")}
+            className="bg-gradient-to-br from-primary/10 to-primary/5"
+          />
         </div>
       </main>
     </div>
@@ -109,6 +115,8 @@ const getExerciseDescription = (exercise: string): string => {
       return "Remember and recall a set of numbers shown briefly";
     case "Number Comparison":
       return "Compare numbers and choose the larger or smaller one";
+    case "Timed Calculations":
+      return "Solve math problems that appear briefly on screen";
     default:
       return "";
   }
