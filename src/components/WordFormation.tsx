@@ -127,10 +127,9 @@ const WordFormation = ({ level, onComplete }: WordFormationProps) => {
       </div>
 
       <WordDisplayArea
-        word={currentWord}
-        showingSequence={showingSequence}
-        currentLetterIndex={currentLetterIndex}
-        selectedLetters={selectedLetters}
+        text={currentWord}
+        speed={displayTime}
+        isPlaying={showingSequence}
       />
 
       {!showingSequence && !isCorrect && (
