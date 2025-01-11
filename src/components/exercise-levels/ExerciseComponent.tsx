@@ -7,6 +7,7 @@ import NumberComparison from "../NumberComparison";
 import TimedCalculations from "../TimedCalculations";
 import LetterRecognition from "../LetterRecognition";
 import WordFormation from "../WordFormation";
+import SightWords from "../SightWords";
 
 interface ExerciseComponentProps {
   title: string;
@@ -44,6 +45,9 @@ const ExerciseComponent = ({ title, level, onComplete }: ExerciseComponentProps)
       break;
     case "Word Formation":
       Component = WordFormation;
+      break;
+    case "Sight Words":
+      Component = SightWords;
       break;
     default:
       throw new Error(`Unknown exercise: ${title}`);
