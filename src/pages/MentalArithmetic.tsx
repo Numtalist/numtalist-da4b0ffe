@@ -44,7 +44,7 @@ const MentalArithmetic = () => {
           <p className="text-lg text-gray-600 mb-4">
             Choose an exercise to begin practicing
           </p>
-          <div className="space-y-2 text-sm text-red-500 font-medium">
+          <div className="space-y-2 text-gray-400 font-bold">
             <p>"Every Exercise, a Unique Challenge – No Repeats, Just Growth!"</p>
             <p className="italic">
               "Even after completing the level map, replaying offers a fresh and exciting experience every time!"
