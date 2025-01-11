@@ -9,6 +9,7 @@ import LetterRecognition from "../LetterRecognition";
 import WordFormation from "../WordFormation";
 import SightWords from "../SightWords";
 import SentenceFlashing from "../SentenceFlashing";
+import MemoryMatch from "../MemoryMatch";
 
 interface ExerciseComponentProps {
   title: string;
@@ -52,6 +53,9 @@ const ExerciseComponent = ({ title, level, onComplete }: ExerciseComponentProps)
       break;
     case "Sentence Flashing":
       Component = SentenceFlashing;
+      break;
+    case "Memory Match":
+      Component = MemoryMatch;
       break;
     default:
       throw new Error(`Unknown exercise: ${title}`);
