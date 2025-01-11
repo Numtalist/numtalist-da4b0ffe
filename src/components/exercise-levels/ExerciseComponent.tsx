@@ -6,6 +6,7 @@ import MemoryChallenge from "../MemoryChallenge";
 import NumberComparison from "../NumberComparison";
 import TimedCalculations from "../TimedCalculations";
 import LetterRecognition from "../LetterRecognition";
+import WordFormation from "../WordFormation";
 
 interface ExerciseComponentProps {
   title: string;
@@ -40,6 +41,9 @@ const ExerciseComponent = ({ title, level, onComplete }: ExerciseComponentProps)
       break;
     case "Letter Recognition":
       Component = LetterRecognition;
+      break;
+    case "Word Formation":
+      Component = WordFormation;
       break;
     default:
       throw new Error(`Unknown exercise: ${title}`);
