@@ -5,6 +5,7 @@ import MissingNumbers from "../MissingNumbers";
 import MemoryChallenge from "../MemoryChallenge";
 import NumberComparison from "../NumberComparison";
 import TimedCalculations from "../TimedCalculations";
+import LetterRecognition from "../LetterRecognition";
 
 interface ExerciseComponentProps {
   title: string;
@@ -36,6 +37,9 @@ const ExerciseComponent = ({ title, level, onComplete }: ExerciseComponentProps)
       break;
     case "Timed Calculations":
       Component = TimedCalculations;
+      break;
+    case "Letter Recognition":
+      Component = LetterRecognition;
       break;
     default:
       throw new Error(`Unknown exercise: ${title}`);
