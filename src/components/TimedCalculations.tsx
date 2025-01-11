@@ -25,7 +25,7 @@ const TimedCalculations = ({ level, onComplete }: TimedCalculationsProps) => {
 
   // Calculate difficulty parameters based on level
   const displayTime = Math.max(1000 - (level - 1) * 100, 300); // Decrease display time as level increases
-  const maxNumber = Math.min(5 + level * 3, 20); // Increase number range with level
+  const maxNumber = Math.min(5 + level * 2, 20); // Increase number range with level
 
   const generateProblem = () => {
     const operators = level <= 3 ? ['+'] : 
@@ -33,8 +33,16 @@ const TimedCalculations = ({ level, onComplete }: TimedCalculationsProps) => {
                      ['+', '-', '*'];
     
     const operator = operators[Math.floor(Math.random() * operators.length)];
-    let num1 = Math.floor(Math.random() * maxNumber) + 1;
-    let num2 = Math.floor(Math.random() * maxNumber) + 1;
+    let num1, num2;
+
+    if (operator === '*') {
+      // For multiplication, limit numbers to 1-9
+      num1 = Math.floor(Math.random() * 9) + 1;
+      num2 = Math.floor(Math.random() * 9) + 1;
+    } else {
+      num1 = Math.floor(Math.random() * maxNumber) + 1;
+      num2 = Math.floor(Math.random() * maxNumber) + 1;
+    }
     
     // Ensure subtraction doesn't result in negative numbers
     if (operator === '-' && num2 > num1) {
