@@ -75,15 +75,12 @@ const PhonicsAndPronunciation = ({ level, onComplete }: PhonicsAndPronunciationP
   }
 
   const playPronunciation = async () => {
-    // Note: Replace 'YOUR_API_KEY' with the actual ElevenLabs API key
-    const API_KEY = 'YOUR_API_KEY';
-    
     try {
       const response = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'xi-api-key': API_KEY,
+          'xi-api-key': import.meta.env.VITE_ELEVEN_LABS_API_KEY,
         },
         body: JSON.stringify({
           text: currentWord.word,
@@ -95,7 +92,10 @@ const PhonicsAndPronunciation = ({ level, onComplete }: PhonicsAndPronunciationP
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to get audio');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail?.message || 'Failed to get audio');
+      }
 
       const audioBlob = await response.blob();
       const audio = new Audio(URL.createObjectURL(audioBlob));
@@ -104,7 +104,7 @@ const PhonicsAndPronunciation = ({ level, onComplete }: PhonicsAndPronunciationP
       console.error('Error playing pronunciation:', error);
       toast({
         title: "Error",
-        description: "Failed to play pronunciation. Please try again.",
+        description: "Failed to play pronunciation. Please check if the API key is valid.",
         variant: "destructive",
       });
     }
