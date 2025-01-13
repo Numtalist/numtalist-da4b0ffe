@@ -23,6 +23,26 @@ const phonicsData = {
     { word: "chair", phonetics: ["ch", "ai", "r"], components: ["ch-", "-air"] },
     { word: "train", phonetics: ["tr", "ai", "n"], components: ["tr-", "-ain"] },
   ],
+  4: [
+    { word: "bright", phonetics: ["br", "igh", "t"], components: ["br-", "-ight"] },
+    { word: "flight", phonetics: ["fl", "igh", "t"], components: ["fl-", "-ight"] },
+  ],
+  5: [
+    { word: "beach", phonetics: ["b", "ea", "ch"], components: ["b-", "-each"] },
+    { word: "reach", phonetics: ["r", "ea", "ch"], components: ["r-", "-each"] },
+  ],
+  6: [
+    { word: "cloud", phonetics: ["cl", "ou", "d"], components: ["cl-", "-oud"] },
+    { word: "proud", phonetics: ["pr", "ou", "d"], components: ["pr-", "-oud"] },
+  ],
+  7: [
+    { word: "stream", phonetics: ["str", "ea", "m"], components: ["str-", "-eam"] },
+    { word: "dream", phonetics: ["dr", "ea", "m"], components: ["dr-", "-eam"] },
+  ],
+  8: [
+    { word: "through", phonetics: ["thr", "ou", "gh"], components: ["thr-", "-ough"] },
+    { word: "thought", phonetics: ["th", "ough", "t"], components: ["th-", "-ought"] },
+  ],
 };
 
 const PhonicsAndPronunciation = ({ level, onComplete }: PhonicsAndPronunciationProps) => {
@@ -31,8 +51,28 @@ const PhonicsAndPronunciation = ({ level, onComplete }: PhonicsAndPronunciationP
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const { toast } = useToast();
 
+  // Get the words for the current level, defaulting to level 1 if the level doesn't exist
   const levelWords = phonicsData[level as keyof typeof phonicsData] || phonicsData[1];
+  
+  // Ensure we have a valid currentWordIndex
+  useEffect(() => {
+    if (currentWordIndex >= levelWords.length) {
+      setCurrentWordIndex(0);
+    }
+  }, [level, currentWordIndex, levelWords.length]);
+
   const currentWord = levelWords[currentWordIndex];
+
+  // If somehow we don't have a currentWord, show a loading state
+  if (!currentWord) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <Card className="p-8">
+          <p className="text-center">Loading exercise...</p>
+        </Card>
+      </div>
+    );
+  }
 
   const playPronunciation = async () => {
     // Note: Replace 'YOUR_API_KEY' with the actual ElevenLabs API key
