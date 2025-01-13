@@ -45,24 +45,6 @@ const exercises = [
     id: 7,
     title: "Phonics and Pronunciation",
     description: "Learn word sounds and pronunciation",
-    level: 4,
-  },
-  {
-    id: 8,
-    title: "Word Meaning and Context",
-    description: "Build vocabulary through context",
-    level: 4,
-  },
-  {
-    id: 9,
-    title: "Visual Puzzles",
-    description: "Complete words with missing letters",
-    level: 5,
-  },
-  {
-    id: 10,
-    title: "Memory Match",
-    description: "Test your memory by matching words",
     level: 1,
   },
 ];
