@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Play } from "lucide-react";
 import LevelDisplay from "./LevelDisplay";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PhonicsAndPronunciationProps {
   level: number;
@@ -51,10 +52,8 @@ const PhonicsAndPronunciation = ({ level, onComplete }: PhonicsAndPronunciationP
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const { toast } = useToast();
 
-  // Get the words for the current level, defaulting to level 1 if the level doesn't exist
   const levelWords = phonicsData[level as keyof typeof phonicsData] || phonicsData[1];
   
-  // Ensure we have a valid currentWordIndex
   useEffect(() => {
     if (currentWordIndex >= levelWords.length) {
       setCurrentWordIndex(0);
@@ -63,7 +62,6 @@ const PhonicsAndPronunciation = ({ level, onComplete }: PhonicsAndPronunciationP
 
   const currentWord = levelWords[currentWordIndex];
 
-  // If somehow we don't have a currentWord, show a loading state
   if (!currentWord) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
@@ -76,11 +74,20 @@ const PhonicsAndPronunciation = ({ level, onComplete }: PhonicsAndPronunciationP
 
   const playPronunciation = async () => {
     try {
+      const { data: { ELEVEN_LABS_API_KEY } } = await supabase
+        .from('secrets')
+        .select('ELEVEN_LABS_API_KEY')
+        .single();
+
+      if (!ELEVEN_LABS_API_KEY) {
+        throw new Error('ElevenLabs API key not found');
+      }
+
       const response = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'xi-api-key': import.meta.env.VITE_ELEVEN_LABS_API_KEY,
+          'xi-api-key': ELEVEN_LABS_API_KEY,
         },
         body: JSON.stringify({
           text: currentWord.word,
