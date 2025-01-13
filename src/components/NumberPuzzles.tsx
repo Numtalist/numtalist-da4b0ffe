@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import LevelDisplay from "./LevelDisplay";
-import { Input } from "@/components/ui/input";
 
 interface NumberPuzzlesProps {
   level: number;
@@ -36,12 +35,33 @@ const generatePuzzle = (level: number) => {
     missingPosition = Math.floor(Math.random() * 3);
   } while (answer > maxNumber); // Ensure answer is within reasonable range
 
-  return { num1, num2, operator, answer, missingPosition };
+  // Generate choices
+  const correctAnswer = missingPosition === 0 ? num1 : 
+                       missingPosition === 1 ? num2 : 
+                       answer;
+  
+  const choices = [correctAnswer];
+  while (choices.length < 4) {
+    const variation = Math.floor(Math.random() * 5) - 2;
+    const choice = correctAnswer + variation;
+    if (!choices.includes(choice) && choice >= 0) {
+      choices.push(choice);
+    }
+  }
+
+  return { 
+    num1, 
+    num2, 
+    operator, 
+    answer, 
+    missingPosition,
+    choices: choices.sort(() => Math.random() - 0.5)
+  };
 };
 
 const NumberPuzzles = ({ level, onComplete }: NumberPuzzlesProps) => {
   const [puzzle, setPuzzle] = useState(generatePuzzle(level));
-  const [userAnswer, setUserAnswer] = useState("");
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const { toast } = useToast();
@@ -49,18 +69,20 @@ const NumberPuzzles = ({ level, onComplete }: NumberPuzzlesProps) => {
   const startGame = () => {
     setGameStarted(true);
     setPuzzle(generatePuzzle(level));
-    setUserAnswer("");
+    setSelectedAnswer(null);
     setIsCorrect(null);
   };
 
   const handleTryAgain = () => {
     setPuzzle(generatePuzzle(level));
-    setUserAnswer("");
+    setSelectedAnswer(null);
     setIsCorrect(null);
   };
 
-  const checkAnswer = () => {
+  const handleAnswerSelect = (choice: number) => {
+    setSelectedAnswer(choice);
     let correctAnswer;
+    
     if (puzzle.missingPosition === 0) {
       correctAnswer = puzzle.num1;
     } else if (puzzle.missingPosition === 1) {
@@ -69,7 +91,7 @@ const NumberPuzzles = ({ level, onComplete }: NumberPuzzlesProps) => {
       correctAnswer = puzzle.answer;
     }
 
-    const isAnswerCorrect = Number(userAnswer) === correctAnswer;
+    const isAnswerCorrect = choice === correctAnswer;
     setIsCorrect(isAnswerCorrect);
 
     if (isAnswerCorrect) {
@@ -125,22 +147,27 @@ const NumberPuzzles = ({ level, onComplete }: NumberPuzzlesProps) => {
         {renderPuzzle()}
       </div>
 
-      <div className="w-full max-w-xs">
-        <Input
-          type="number"
-          value={userAnswer}
-          onChange={(e) => setUserAnswer(e.target.value)}
-          placeholder="Enter your answer"
-          className="text-center text-2xl h-16"
-          disabled={isCorrect !== null}
-        />
+      <div className="grid grid-cols-2 gap-4 w-full max-w-[300px]">
+        {puzzle.choices.map((choice, index) => (
+          <Button
+            key={index}
+            onClick={() => handleAnswerSelect(choice)}
+            variant={
+              selectedAnswer === choice
+                ? isCorrect
+                  ? "default"
+                  : "destructive"
+                : "outline"
+            }
+            className={`h-16 text-2xl ${
+              selectedAnswer === choice && isCorrect && "bg-green-500"
+            }`}
+            disabled={isCorrect !== null}
+          >
+            {choice}
+          </Button>
+        ))}
       </div>
-
-      {isCorrect === null && userAnswer && (
-        <Button onClick={checkAnswer} size="lg">
-          Check Answer
-        </Button>
-      )}
 
       {isCorrect === false && (
         <Button 
