@@ -95,6 +95,12 @@ const MentalArithmetic = () => {
             onClick={() => handleExerciseSelect("Timed Calculations")}
             className="bg-gradient-to-br from-primary/10 to-primary/5"
           />
+          <ActivityCard
+            title="Number Puzzles"
+            description="Fill in the missing number in equations"
+            onClick={() => handleExerciseSelect("Number Puzzles")}
+            className="bg-gradient-to-br from-secondary/10 to-secondary/5"
+          />
         </div>
       </main>
     </div>
@@ -117,6 +123,8 @@ const getExerciseDescription = (exercise: string): string => {
       return "Compare numbers and choose the larger or smaller one";
     case "Timed Calculations":
       return "Solve math problems that appear briefly on screen";
+    case "Number Puzzles":
+      return "Fill in the missing number in equations";
     default:
       return "";
   }
